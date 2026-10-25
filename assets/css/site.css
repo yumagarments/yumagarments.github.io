@@ -35,16 +35,20 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
 .card {
   aspect-ratio: 1 / 1; background: var(--card); padding: var(--pad); border-radius: var(--radius);
   border-right: 1px dashed var(--edge); border-bottom: 1px dashed var(--edge);
-  display: flex; flex-direction: column; gap: 8px; min-width: 0; overflow: hidden;
+  display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; min-width: 0; overflow: hidden;
 }
 .card[hidden] { display: none; }
 .row-top { display: flex; justify-content: space-between; gap: 8px; }
 .row-top .m { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.card .img { margin: auto; width: 70%; aspect-ratio: 1 / 1; overflow: hidden; --bg: var(--card); }
+/* 画像はタイトルを除いた残りの高さの中で上下左右中央に */
+.card .imgbox { container-type: size; display: grid; place-items: center; min-height: 0; }
+.card .img { width: min(70cqw, 100cqh); aspect-ratio: 1 / 1; overflow: hidden; --bg: var(--card); }
 .card .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .card .img svg, .art svg { width: 100%; height: 100%; display: block; }
 .art { width: 100%; height: 100%; }
-.card h3 { margin: 0; font: var(--dw) var(--ts)/1.3 var(--font-d); letter-spacing: var(--tr); }
+/* タイトルは常に 3 行分の高さを確保（長い場合は 3 行で省略）→ 画像の大きさと位置がどのカードでも揃う */
+.card h3 { --lh: 1.3; margin: 0; font: var(--dw) var(--ts)/var(--lh) var(--font-d); letter-spacing: var(--tr);
+  height: calc(var(--lh) * 3em); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
 .card:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
 
 .list-head { display: flex; justify-content: space-between; border-top: 1px solid var(--ink); padding: 8px 0 14px; }
@@ -82,8 +86,18 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
   :root { --margin: 16px; }
   .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .card { padding: 10px; }
-  .card h3 { font-size: 13px; }
-  .card .img { width: 72%; }
+  .card h3 { font-size: 12px; --lh: 1.35; }
+  body { font-size: 13px; letter-spacing: .03em; }
+  .logo { font-size: 24px; }
+  .s { font-size: 9.5px; }
+  .tagline { margin-top: 4px; }
+  aside section { padding: 6px 0 14px; }
+  .aside-body { margin-top: 18px; }
+  .page { padding: 18px 16px; }
+  .page h1 { font-size: 20px; }
+  .prose { font-size: 14px; line-height: 1.8; }
+  .row .t { font-size: 13px; }
+  .card .img { width: min(80cqw, 100cqh); }
   .row { grid-template-columns: 1fr; gap: 2px; }
 }
 

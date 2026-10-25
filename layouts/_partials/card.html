@@ -1,6 +1,6 @@
 {{ $pg := .page }}
 {{ $tags := slice }}{{ range $pg.Params.tags }}{{ $tags = $tags | append (urlize .) }}{{ end }}
 <a class="card" href="{{ $pg.RelPermalink }}" data-kind="{{ $pg.Section }}" data-tags="{{ delimit $tags " " }}">
-  <div class="img">{{ partial "visual.html" $pg }}</div>
+  <div class="imgbox"><div class="img">{{ partial "visual.html" $pg }}</div></div>
   <h3>{{ $pg.Title }}</h3>
 </a>
