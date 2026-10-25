@@ -25,6 +25,7 @@
         <a data-f="all" href="{{ $home }}#f=all">All</a>
         <a data-f="works" href="{{ $home }}#f=works">Works</a>
         <a data-f="posts" href="{{ $home }}#f=posts">Notes</a>
+        <a data-f="news" href="{{ $home }}#f=news">News</a>
         {{ range $key, $tax := site.Taxonomies.tags }}<a data-f="{{ $key }}" href="{{ $home }}#f={{ $key }}">{{ $tax.Page.Title }}</a>{{ end }}
       </div>
     </section>

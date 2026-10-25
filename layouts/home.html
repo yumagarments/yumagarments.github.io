@@ -1,8 +1,17 @@
 {{ define "main" }}
-{{ $works := where site.RegularPages "Section" "works" }}
-{{ $posts := where site.RegularPages "Section" "posts" }}
+{{ $sections := slice "works" "posts" "news" }}
+{{ $all := where site.RegularPages "Section" "in" $sections }}
+{{/* 番号はセクションごとに古い順で 01, 02 …（作品は W、お知らせは N を付ける） */}}
+{{ $prefix := dict "works" "W" "posts" "" "news" "N" }}
+{{ $nums := dict }}
+{{ range $sections }}
+  {{ $sec := . }}
+  {{ $list := where (where site.RegularPages "Section" $sec) "Params.pinned" "!=" true }}
+  {{ $n := len $list }}
+  {{ range $i, $p := $list }}{{ $nums = merge $nums (dict $p.RelPermalink (printf "%s%02d" (index $prefix $sec) (sub $n $i))) }}{{ end }}
+{{ end }}
 <div class="cards" id="cards" data-filterable>
-  {{ $n := len $works }}{{ range $i, $w := $works }}{{ partial "card.html" (dict "page" $w "no" (printf "W%02d" (sub $n $i))) }}{{ end }}
-  {{ $n = len $posts }}{{ range $i, $p := $posts }}{{ partial "card.html" (dict "page" $p "no" (printf "%02d" (sub $n $i))) }}{{ end }}
+  {{ range where $all "Params.pinned" true }}{{ partial "card.html" (dict "page" . "no" "") }}{{ end }}
+  {{ range where $all "Params.pinned" "!=" true }}{{ partial "card.html" (dict "page" . "no" (index $nums .RelPermalink)) }}{{ end }}
 </div>
 {{ end }}

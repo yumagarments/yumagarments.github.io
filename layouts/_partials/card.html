@@ -1,7 +1,7 @@
 {{ $pg := .page }}
 {{ $tags := slice }}{{ range $pg.Params.tags }}{{ $tags = $tags | append (urlize .) }}{{ end }}
 <a class="card" href="{{ $pg.RelPermalink }}" data-kind="{{ $pg.Section }}" data-tags="{{ delimit $tags " " }}">
-  <div class="row-top s"><span>{{ .no }}</span><span class="m">{{ with $pg.Params.meta }}{{ . }}{{ else }}{{ delimit ($pg.Params.tags | default slice) " / " }}{{ end }}</span></div>
+  <div class="row-top s"><span{{ if $pg.Params.pinned }} class="pin"{{ end }}>{{ if $pg.Params.pinned }}● Pinned{{ else }}{{ .no }}{{ end }}</span><span class="m">{{ with $pg.Params.meta }}{{ . }}{{ else }}{{ if eq $pg.Section "news" }}News{{ else }}{{ delimit ($pg.Params.tags | default slice) " / " }}{{ end }}{{ end }}</span></div>
   <div class="img">{{ partial "visual.html" $pg }}</div>
   <h3>{{ $pg.Title }}</h3>
 </a>

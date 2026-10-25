@@ -18,6 +18,7 @@ content:
       - { name: tags, label: タグ（例 Illusion / Perspective / Tech）, type: string, list: true }
       - { name: image, label: カード画像（正方形に切り抜かれます）, type: image }
       - { name: draft, label: 下書き（オンの間は公開されません）, type: boolean }
+      - { name: pinned, label: トップに固定（ピン留め）, type: boolean }
       - { name: body, label: 本文, type: rich-text, options: { format: markdown } }
 
   - name: works
