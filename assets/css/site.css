@@ -34,10 +34,10 @@ aside .label { letter-spacing: .15em; }
 .foot { margin-top: 8px; }
 
 /* ---------- カード（標本シート風：点線で区切った正方形） ---------- */
-.cards { display: grid; grid-template-columns: repeat(var(--per-in), minmax(0, 1fr)); border-top: 1px dashed var(--edge); border-left: 1px dashed var(--edge); }
+.cards { display: grid; grid-template-columns: repeat(var(--per-in), minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
 /* カード：正方形の画像＋下にキャプション（マスは少し縦長） */
 .card { display: flex; flex-direction: column; min-width: 0; background: var(--card);
-  border-right: 1px dashed var(--edge); border-bottom: 1px dashed var(--edge); }
+  border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
 .card[hidden] { display: none; }
 .card .img { position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; --bg: var(--card); }
 .card .img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
@@ -60,15 +60,15 @@ aside .label { letter-spacing: .15em; }
 @media (prefers-reduced-motion: reduce) { .card.long:hover h3 .flow { animation: none; } }
 
 .list-head { display: flex; justify-content: space-between; border-top: 1px solid var(--ink); padding: 8px 0 14px; }
-.rows { border-top: 1px dashed var(--edge); }
-.row { display: grid; grid-template-columns: 8em 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--edge); align-items: baseline; }
+.rows { border-top: 1px solid var(--ink); }
+.row { display: grid; grid-template-columns: 8em 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--ink); align-items: baseline; }
 .row .t { font: var(--dw) var(--ts)/1.35 var(--font-d); letter-spacing: var(--tr); }
 .row:hover .t { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- 記事ページ ---------- */
-.page { background: var(--card); border: 1px dashed var(--edge); padding: clamp(20px, 4vw, 48px); }
+.page { background: var(--card); border: 1px solid var(--ink); padding: clamp(20px, 4vw, 48px); }
 .page h1 { font: var(--dw) clamp(24px, 3vw, 34px)/1.25 var(--font-d); letter-spacing: var(--tr); margin: 10px 0 10px; }
-.fig { width: min(100%, 440px); aspect-ratio: 1 / 1; margin: 24px 0; border: 1px dashed var(--edge); overflow: hidden; --bg: var(--card); }
+.fig { width: min(100%, 440px); aspect-ratio: 1 / 1; margin: 24px 0; border: 1px solid var(--ink); overflow: hidden; --bg: var(--card); }
 .fig img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .prose { line-height: 1.9; }
 .prose > * + * { margin-top: 1em; }
@@ -109,13 +109,13 @@ aside .label { letter-spacing: .15em; }
 }
 
 /* ---------- リンクカード（URL だけの行） ---------- */
-.linkcard { display: flex; align-items: stretch; margin: .4em 0; border: 1px dashed var(--edge); background: var(--bg); color: var(--ink) !important; text-decoration: none !important; min-height: 112px; }
+.linkcard { display: flex; align-items: stretch; margin: .4em 0; border: 1px solid var(--ink); background: var(--bg); color: var(--ink) !important; text-decoration: none !important; min-height: 112px; }
 .linkcard:hover { border-color: var(--ink); }
 .lc-text { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; flex: 1; min-width: 0; line-height: 1.5; }
 .lc-title { font: var(--dw) 1em/1.4 var(--font-d); letter-spacing: var(--tr); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .lc-desc { font-size: .85em; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .lc-site { margin-top: auto; font-family: var(--font-m); font-size: 10.5px; letter-spacing: .02em; color: var(--muted); }
-.lc-img { flex: none; width: 112px; aspect-ratio: 1 / 1; align-self: center; margin: 0 0 0 0; overflow: hidden; border-left: 1px dashed var(--edge); }
+.lc-img { flex: none; width: 112px; aspect-ratio: 1 / 1; align-self: center; margin: 0 0 0 0; overflow: hidden; border-left: 1px solid var(--ink); }
 .lc-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 @media (max-width: 560px) { .lc-img { width: 84px; } .linkcard { min-height: 84px; } }
 
