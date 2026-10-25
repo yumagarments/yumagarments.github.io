@@ -40,7 +40,7 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
 .card[hidden] { display: none; }
 .row-top { display: flex; justify-content: space-between; gap: 8px; }
 .row-top .m { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.card .img { margin: auto; width: 60%; aspect-ratio: 1 / 1; overflow: hidden; --bg: var(--card); }
+.card .img { margin: auto; width: 70%; aspect-ratio: 1 / 1; overflow: hidden; --bg: var(--card); }
 .card .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .card .img svg, .art svg { width: 100%; height: 100%; display: block; }
 .art { width: 100%; height: 100%; }

@@ -12,7 +12,7 @@
   "type": {
     "display": "Helvetica Neue",
     "weight": 700,
-    "titleSize": 16,
+    "titleSize": 14,
     "tracking": -0.02,
     "body": "Helvetica Neue",
     "bodySize": 15,
@@ -22,12 +22,12 @@
   },
   "grid": {
     "layout": "split",
-    "per": 2,
+    "per": 4,
     "gap": 0,
     "margin": 32,
     "maxw": 1400,
     "radius": 0,
-    "pad": 14,
+    "pad": 12,
     "cardStyle": "flat",
     "image": "fill",
     "lines": "none",
