@@ -45,7 +45,6 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
 .card .img svg, .art svg { width: 100%; height: 100%; display: block; }
 .art { width: 100%; height: 100%; }
 .card h3 { margin: 0; font: var(--dw) var(--ts)/1.3 var(--font-d); letter-spacing: var(--tr); }
-.card:hover .img svg, .card:hover .img img { filter: invert(1); }
 .card:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
 
 .list-head { display: flex; justify-content: space-between; border-top: 1px solid var(--ink); padding: 8px 0 14px; }
@@ -97,7 +96,6 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
 .lc-site { margin-top: auto; font-family: var(--font-m); font-size: 10.5px; letter-spacing: .02em; color: var(--muted); }
 .lc-img { flex: none; width: 112px; aspect-ratio: 1 / 1; align-self: center; margin: 0 0 0 0; overflow: hidden; border-left: 1px dashed var(--edge); }
 .lc-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.linkcard:hover .lc-img img { filter: invert(1); }
 @media (max-width: 560px) { .lc-img { width: 84px; } .linkcard { min-height: 84px; } }
 
 /* ピン留め */
