@@ -1,5 +1,6 @@
 ---
-title: "文化庁メディア芸術クリエイター育成支援事業に採択されました"
+title: "令和8年度文化庁メディア芸術クリエイター育成支援事業に採択されました"
+news: true
 date: 2026-10-26
 meta: "Exhibition / Animation, 2026"
 tags: ["Perspective", "Illusion"]

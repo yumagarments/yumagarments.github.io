@@ -10,7 +10,7 @@
         {{ end }}
       </div>
     </section>
-    {{ with first 3 (where site.RegularPages "Section" "news") }}
+    {{ with first 3 (partial "news-pages.html" .) }}
     <section><div class="s m label">News</div>
       <div class="sec-body lines">
         {{ range . }}<div><span class="s m">{{ .Date.Format "2006.01.02" }}</span><br><a class="lnk" href="{{ .RelPermalink }}">{{ .Title }}</a></div>{{ end }}

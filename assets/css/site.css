@@ -62,7 +62,7 @@ aside .label { letter-spacing: .15em; }
 .list-head { display: flex; justify-content: space-between; border-top: 1px solid var(--ink); padding: 8px 0 14px; }
 .rows { border-top: 1px solid var(--ink); }
 .row { display: grid; grid-template-columns: 8em 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--ink); align-items: baseline; }
-.row .t { font: var(--dw) var(--ts)/1.35 var(--font-d); letter-spacing: var(--tr); }
+.row .t { font: 400 var(--ts)/1.35 var(--font-d); }
 .row:hover .t { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- 記事ページ ---------- */

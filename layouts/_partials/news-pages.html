@@ -1,0 +1,2 @@
+{{- $p := union (where site.RegularPages "Section" "news") (where site.RegularPages "Params.news" true) -}}
+{{- return $p.ByDate.Reverse -}}

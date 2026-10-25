@@ -1,8 +1,8 @@
 {{ define "main" }}
-<div class="list-head s"><span>{{ .Title }}</span><span class="m">{{ len .Pages }} entries</span></div>
+<div class="list-head s"><span>{{ .Title }}</span><span class="m">{{ if eq .Section "news" }}{{ len (partial "news-pages.html" .) }}{{ else }}{{ len .Pages }}{{ end }} entries</span></div>
 {{ if eq .Section "news" }}
   <div class="rows">
-    {{ range .Pages }}<a class="row" href="{{ .RelPermalink }}"><span class="s m">{{ .Date.Format "2006.01.02" }}</span><span class="t">{{ .Title }}</span></a>{{ end }}
+    {{ range partial "news-pages.html" . }}<a class="row" href="{{ .RelPermalink }}"><span class="s m">{{ .Date.Format "2006.01.02" }}</span><span class="t">{{ .Title }}</span></a>{{ end }}
   </div>
 {{ else }}
   <div class="cards">

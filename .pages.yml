@@ -19,6 +19,7 @@ content:
       - { name: image, label: カード画像（正方形に切り抜かれます）, type: image }
       - { name: draft, label: 下書き（オンの間は公開されません）, type: boolean }
       - { name: pinned, label: トップに固定（ピン留め）, type: boolean }
+      - { name: news, label: ニュース欄にも表示, type: boolean }
       - { name: hideInGrid, label: トップのグリッドに出さない, type: boolean }
       - { name: body, label: 本文, type: rich-text, options: { format: markdown } }
 
@@ -36,6 +37,7 @@ content:
       - { name: date, label: 日付（新しい順に並びます）, type: date }
       - { name: tags, label: タグ, type: string, list: true }
       - { name: image, label: カード画像（正方形に切り抜かれます）, type: image }
+      - { name: news, label: ニュース欄にも表示, type: boolean }
       - { name: video, label: 動画・投稿 URL（YouTube / Vimeo / Instagram。画像が空ならサムネを自動で使用）, type: string }
       - { name: draft, label: 下書き, type: boolean }
       - { name: body, label: 説明, type: rich-text, options: { format: markdown } }
