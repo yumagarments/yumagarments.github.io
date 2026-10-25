@@ -1,0 +1,41 @@
+{{- /* 本文に URL だけを書いた行は、相手ページの OGP（タイトル・説明・サムネ）を取得してリンクカードにする */ -}}
+{{- $u := .Destination -}}
+{{- $bare := and (or (hasPrefix $u "http://") (hasPrefix $u "https://")) (eq (.Text | string | plainify | htmlUnescape) $u) -}}
+{{- if $bare -}}
+  {{- $host := (urls.Parse $u).Host -}}
+  {{- $og := dict -}}
+  {{- with try (resources.GetRemote $u (dict "headers" (dict "User-Agent" "Mozilla/5.0 (compatible; LinkCardBot; +https://yumagarments.github.io/)"))) -}}
+    {{- with .Err -}}{{- warnf "linkcard: %s を取得できませんでした" $u -}}
+    {{- else with .Value -}}
+      {{- $html := .Content -}}
+      {{- range slice "og:title" "og:description" "og:image" "og:site_name" "twitter:image" "description" -}}
+        {{- $key := . -}}
+        {{- with findRE (printf `<meta[^>]*(?:property|name)=["']%s["'][^>]*>` $key) $html 1 -}}
+          {{- with findRESubmatch `content=["']([^"']*)["']` (index . 0) 1 -}}
+            {{- $og = merge $og (dict $key (index (index . 0) 1 | htmlUnescape)) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+      {{- if not $og.og_title -}}
+        {{- with findRESubmatch `(?s)<title[^>]*>(.*?)</title>` $html 1 -}}{{- $og = merge $og (dict "title" (index (index . 0) 1 | htmlUnescape | strings.TrimSpace)) -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $title := or (index $og "og:title") (index $og "title") $host -}}
+  {{- $desc := or (index $og "og:description") (index $og "description") "" -}}
+  {{- $site := or (index $og "og:site_name") $host -}}
+  {{- $img := or (index $og "og:image") (index $og "twitter:image") "" -}}
+  {{- if and $img (hasPrefix $img "//") -}}{{- $img = printf "https:%s" $img -}}{{- end -}}
+  {{- if and $img (hasPrefix $img "/") -}}{{- $p := urls.Parse $u -}}{{- $img = printf "%s://%s%s" $p.Scheme $p.Host $img -}}{{- end -}}
+  {{- $thumb := "" -}}
+  {{- with $img -}}
+    {{- $thumb = . -}}
+    {{- /* 取得できれば正方形に切り抜いて自サイトに保存（相手サイトの画像が消えても表示される） */ -}}
+    {{- with try (resources.GetRemote .) -}}{{- with .Value -}}{{- if in (slice "image/jpeg" "image/png" "image/webp" "image/gif") .MediaType.Type -}}
+      {{- $thumb = (.Fill "320x320 Center webp").RelPermalink -}}
+    {{- end -}}{{- end -}}{{- end -}}
+  {{- end -}}
+<a class="linkcard" href="{{ $u }}" target="_blank" rel="noopener"><span class="lc-text"><span class="lc-title">{{ $title }}</span>{{ with $desc }}<span class="lc-desc">{{ . | truncate 100 }}</span>{{ end }}<span class="lc-site">{{ $site }}</span></span>{{ with $thumb }}<span class="lc-img"><img src="{{ . }}" alt="" loading="lazy"></span>{{ end }}</a>
+{{- else -}}
+<a href="{{ $u | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if hasPrefix $u "http" }} target="_blank" rel="noopener"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- end -}}

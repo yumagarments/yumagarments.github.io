@@ -10,6 +10,8 @@
   <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
   <meta property="og:url" content="{{ .Permalink }}">
   {{ with .Params.image }}<meta property="og:image" content="{{ . | absURL }}">{{ end }}
+  <meta name="twitter:card" content="{{ if .Params.image }}summary_large_image{{ else }}summary{{ end }}">
+  <meta property="og:site_name" content="{{ $p.name }}">
   {{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ $p.name }}">{{ end }}
   {{ partial "design-vars.html" . }}
   {{ $css := resources.Get "css/site.css" | minify | fingerprint }}

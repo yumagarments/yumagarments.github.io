@@ -9,7 +9,7 @@ content:
     type: collection
     path: content/posts
     exclude: [_index.md]
-    filename: "{year}-{month}-{day}-{primary}.md"
+    filename: "{year}-{month}-{day}-{hour}{minute}{second}.md"
     view:
       fields: [title, date, draft]
     fields:
@@ -18,14 +18,14 @@ content:
       - { name: tags, label: タグ（例 Illusion / Perspective / Tech）, type: string, list: true }
       - { name: image, label: カード画像（正方形に切り抜かれます）, type: image }
       - { name: draft, label: 下書き（オンの間は公開されません）, type: boolean }
-      - { name: body, label: 本文, type: rich-text }
+      - { name: body, label: 本文, type: rich-text, options: { format: markdown } }
 
   - name: works
     label: Works（作品）
     type: collection
     path: content/works
     exclude: [_index.md]
-    filename: "{primary}.md"
+    filename: "work-{year}{month}{day}-{hour}{minute}.md"
     view:
       fields: [title, meta, date]
     fields:
@@ -35,21 +35,21 @@ content:
       - { name: tags, label: タグ, type: string, list: true }
       - { name: image, label: カード画像（正方形に切り抜かれます）, type: image }
       - { name: draft, label: 下書き, type: boolean }
-      - { name: body, label: 説明, type: rich-text }
+      - { name: body, label: 説明, type: rich-text, options: { format: markdown } }
 
   - name: news
     label: News（お知らせ）
     type: collection
     path: content/news
     exclude: [_index.md]
-    filename: "{year}-{month}-{day}-{primary}.md"
+    filename: "{year}-{month}-{day}-{hour}{minute}{second}.md"
     view:
       fields: [title, date]
     fields:
       - { name: title, label: タイトル, type: string, required: true }
       - { name: date, label: 日付, type: date }
       - { name: draft, label: 下書き, type: boolean }
-      - { name: body, label: 本文, type: rich-text }
+      - { name: body, label: 本文, type: rich-text, options: { format: markdown } }
 
   - name: profile
     label: プロフィール
