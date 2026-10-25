@@ -10,7 +10,7 @@ image: "/images/yuma-garments.jpg"
 ## 経歴
 
 - 2026年　「映像作家100人2026」選出
-- 2026年　令和8年度 文化庁メディア芸術クリエイター育成事業 発表支援プログラム採択（企画「[見ることの物差し](https://creators.j-mediaarts.bunka.go.jp/project/2026-es36)」）
+- 2026年　令和8年度 文化庁メディア芸術クリエイター育成支援事業 発表支援プログラム採択（企画「[見ることの物差し](https://creators.j-mediaarts.bunka.go.jp/project/2026-es36)」）
 
 ## 展示・上映歴
 
