@@ -19,12 +19,15 @@ img { max-width: 100%; }
 .split { display: grid; grid-template-columns: minmax(220px, 3fr) 9fr; gap: calc(var(--gap) * 2 + 40px); padding-top: 32px; padding-bottom: 80px; }
 .split > main { min-width: 0; }
 aside { position: sticky; top: 24px; align-self: start; }
-.logo { font: var(--dw) 30px/1.05 var(--font-d); letter-spacing: -0.05em; display: inline-block; }
+.logo { font: var(--dw) 30px/1.05 var(--font-d); letter-spacing: -0.05em; display: inline-block; margin-bottom: 28px; }
 .tagline { margin: 6px 0 28px; }
 aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
+/* ABOUT・INFO・NEWS・INDEX の見出しは字間を大きく（通常の 5 倍） */
+aside .label { letter-spacing: .15em; }
 .sec-body { margin-top: 6px; }
 .lines div { padding: 1px 0; }
 .lines .s { display: inline-block; min-width: 7.5em; }
+.lines .label { min-width: 8.6em; }
 .filters { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
 .filters a { color: var(--muted); }
 .filters a.on, .filters a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
