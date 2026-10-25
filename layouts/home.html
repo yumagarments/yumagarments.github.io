@@ -1,6 +1,7 @@
 {{ define "main" }}
 {{ $sections := slice "works" "posts" "news" }}
 {{ $all := where site.RegularPages "Section" "in" $sections }}
+{{ $all = where $all "Params.hideInGrid" "!=" true }}
 {{/* 番号はセクションごとに古い順で 01, 02 …（作品は W、お知らせは N を付ける） */}}
 {{ $prefix := dict "works" "W" "posts" "" "news" "N" }}
 {{ $nums := dict }}

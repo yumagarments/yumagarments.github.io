@@ -19,6 +19,7 @@ content:
       - { name: image, label: カード画像（正方形に切り抜かれます）, type: image }
       - { name: draft, label: 下書き（オンの間は公開されません）, type: boolean }
       - { name: pinned, label: トップに固定（ピン留め）, type: boolean }
+      - { name: hideInGrid, label: トップのグリッドに出さない, type: boolean }
       - { name: body, label: 本文, type: rich-text, options: { format: markdown } }
 
   - name: works
@@ -51,6 +52,7 @@ content:
       - { name: title, label: タイトル, type: string, required: true }
       - { name: date, label: 日付, type: date }
       - { name: draft, label: 下書き, type: boolean }
+      - { name: hideInGrid, label: トップのグリッドに出さない, type: boolean }
       - { name: body, label: 本文, type: rich-text, options: { format: markdown } }
 
   - name: profile
