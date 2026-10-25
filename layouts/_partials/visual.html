@@ -1,3 +1,4 @@
-{{- with .Params.image -}}<img src="{{ . | relURL }}" alt="" loading="lazy">
-{{- else with .Params.video -}}{{- with (partial "video.html" .).thumb -}}<img src="{{ . }}" alt="" loading="lazy">{{- end -}}
-{{- else -}}{{ $n := mod (len $.Title) 11 }}{{ if isset $.Params "art" }}{{ $n = $.Params.art }}{{ end }}<div class="art" data-art="{{ $n }}"></div>{{- end -}}
+{{- $art := mod (len .Title) 11 -}}{{- if isset .Params "art" -}}{{- $art = .Params.art -}}{{- end -}}
+{{- $src := "" -}}
+{{- with .Params.image -}}{{- $src = . | relURL -}}{{- else with .Params.video -}}{{- with (partial "video.html" .).thumb -}}{{- $src = . -}}{{- end -}}{{- end -}}
+{{- with $src -}}<img src="{{ . }}" alt="" loading="lazy">{{- else -}}<div class="art" data-art="{{ $art }}"></div>{{- end -}}

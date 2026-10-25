@@ -15,4 +15,19 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+{{- /* Instagram：投稿を埋め込み、サムネはビルド時に保存（Instagram の画像 URL は期限切れになるため） */ -}}
+{{- with findRESubmatch `instagram\.com/(?:[^/]+/)?(p|reel|tv)/([A-Za-z0-9_-]+)` $u 1 -}}
+  {{- $kind := index (index . 0) 1 -}}{{- $id := index (index . 0) 2 -}}
+  {{- $perma := printf "https://www.instagram.com/%s/%s/" $kind $id -}}
+  {{- $r = dict "instagram" $perma -}}
+  {{- $ua := dict "headers" (dict "User-Agent" "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)") -}}
+  {{- with try (resources.GetRemote $perma $ua) -}}{{- with .Value -}}
+    {{- with findRESubmatch `property="og:image" content="([^"]+)"` .Content 1 -}}
+      {{- $img := index (index . 0) 1 | htmlUnescape -}}
+      {{- with try (resources.GetRemote $img $ua) -}}{{- with .Value -}}
+        {{- $r = merge $r (dict "thumb" (.Fill "720x720 Center").RelPermalink) -}}
+      {{- end -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}{{- end -}}
+{{- end -}}
 {{- return $r -}}

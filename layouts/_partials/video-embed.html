@@ -3,3 +3,7 @@
 {{- $tall := le (div (float $v.w) (float $v.h)) 1.2 -}}
 <span class="video{{ if $tall }} tall{{ end }}" style="{{ printf "aspect-ratio: %v / %v" $v.w $v.h | safeCSS }}"><iframe src="{{ . }}" title="video" loading="lazy" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></span>
 {{- end -}}
+{{- with $v.instagram -}}
+<div class="insta"><blockquote class="instagram-media" data-instgrm-permalink="{{ . }}" data-instgrm-version="14"><a href="{{ . }}">Instagram で見る</a></blockquote></div>
+<script async src="https://www.instagram.com/embed.js"></script>
+{{- end -}}

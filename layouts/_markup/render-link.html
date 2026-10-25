@@ -1,7 +1,7 @@
 {{- /* 本文に URL だけを書いた行は、相手ページの OGP（タイトル・説明・サムネ）を取得してリンクカードにする */ -}}
 {{- $u := .Destination -}}
 {{- $bare := and (or (hasPrefix $u "http://") (hasPrefix $u "https://")) (eq (.Text | string | plainify | htmlUnescape) $u) -}}
-{{- if and $bare (findRE `(youtube\.com/(watch|shorts/)|youtu\.be/|vimeo\.com/)` $u 1) -}}
+{{- if and $bare (findRE `(youtube\.com/(watch|shorts/)|youtu\.be/|vimeo\.com/|instagram\.com/(.+/)?(p|reel|tv)/)` $u 1) -}}
 {{- partial "video-embed.html" $u -}}
 {{- else if $bare -}}
   {{- $host := (urls.Parse $u).Host -}}
