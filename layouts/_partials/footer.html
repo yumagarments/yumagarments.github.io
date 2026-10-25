@@ -1,0 +1,10 @@
+<footer class="site-footer">
+  <div class="container">
+    <span>© {{ now.Year }} {{ site.Params.author }}</span>
+    <span class="links">
+      {{ with site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
+      {{ with site.Params.x }}<a href="{{ . }}">X</a>{{ end }}
+      <a href="{{ "index.xml" | relURL }}">RSS</a>
+    </span>
+  </div>
+</footer>

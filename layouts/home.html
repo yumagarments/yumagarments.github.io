@@ -1,0 +1,20 @@
+{{ define "main" }}
+<section class="hero">
+  <h1>{{ site.Params.author }}</h1>
+  <div class="lead">{{ .Content }}</div>
+  <p class="cta">
+    <a class="btn" href="{{ "about/" | relURL }}">About me</a>
+    {{ with site.Params.github }}<a class="btn ghost" href="{{ . }}">GitHub</a>{{ end }}
+  </p>
+</section>
+
+<section>
+  <div class="section-head"><h2>News</h2><a href="{{ "news/" | relURL }}">すべて見る →</a></div>
+  {{ partial "post-list.html" (first 3 (where site.RegularPages "Section" "news")) }}
+</section>
+
+<section>
+  <div class="section-head"><h2>Blog</h2><a href="{{ "posts/" | relURL }}">すべて見る →</a></div>
+  {{ partial "post-list.html" (first 5 (where site.RegularPages "Section" "posts")) }}
+</section>
+{{ end }}

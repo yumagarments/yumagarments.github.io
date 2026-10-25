@@ -1,0 +1,6 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+{{ with .Description }}<p class="muted">{{ . }}</p>{{ end }}
+{{ .Content }}
+{{ partial "post-list.html" .Pages }}
+{{ end }}
