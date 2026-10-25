@@ -32,34 +32,27 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
 
 /* ---------- カード（標本シート風：点線で区切った正方形） ---------- */
 .cards { display: grid; grid-template-columns: repeat(var(--per-in), minmax(0, 1fr)); border-top: 1px dashed var(--edge); border-left: 1px dashed var(--edge); }
-/* カード：正方形のマスを画像で全面に埋め、タイトルは左上に白いラベルで重ねる */
-.card { position: relative; display: block; aspect-ratio: 1 / 1; min-width: 0; overflow: hidden; background: var(--card);
+/* カード：正方形の画像＋下にキャプション（マスは少し縦長） */
+.card { display: flex; flex-direction: column; min-width: 0; background: var(--card);
   border-right: 1px dashed var(--edge); border-bottom: 1px dashed var(--edge); }
 .card[hidden] { display: none; }
-.card .img { position: absolute; inset: 0; --bg: var(--card); }
+.card .img { position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; --bg: var(--card); }
 .card .img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
 .card .img svg, .art svg { width: 100%; height: 100%; display: block; }
 .art { width: 100%; height: 100%; }
 .card:hover .img img, .card:hover .img svg { transform: scale(1.03); }
-/* 上部 2 行ぶんに、背景色へ溶けるぼかし（タイトルはその上に直接のせる） */
-.card::before { content: ""; position: absolute; left: 0; right: 0; z-index: 1; pointer-events: none;
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-.card::before { top: 0; height: calc(var(--pad) * 2 + var(--ts) * 2.6 + 40px);
-  background: linear-gradient(to bottom, var(--card) 0%, color-mix(in srgb, var(--card) 80%, transparent) 45%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
-.card .head { position: absolute; z-index: 2; left: var(--pad); right: var(--pad); top: var(--pad); }
-.card h3 { margin: 0;
-  color: var(--ink); font: var(--dw) var(--ts)/1.3 var(--font-d); letter-spacing: var(--tr); overflow: hidden; }
+.card .head { padding: 10px var(--pad) 12px; }
+/* タイトルは常に 2 行ぶんの高さ（どのマスも同じ大きさに揃う） */
+.card h3 { margin: 0; color: var(--ink); font: 400 var(--ts)/1.4 var(--font-d); letter-spacing: 0.01em; height: 2.8em; overflow: hidden; }
 .card h3 .t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
-.card:hover h3 .t { text-decoration: underline; text-underline-offset: 3px; }
-/* 2 行に収まらないタイトルは、ホバーすると 1 行で横に流れる（両端はふわっと消える） */
+.card:hover h3 .t { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+/* 2 行に収まらないタイトルは、ホバーすると 1 行で横に流れる */
 .card h3 .flow { display: none; white-space: nowrap; width: max-content; }
 .card h3 .flow span { padding-right: 2.5em; }
-.card.long:hover h3 { -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
+.card.long:hover h3 { height: 1.4em; margin-bottom: 1.4em; -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent); }
 .card.long:hover h3 .t { display: none; }
 .card.long:hover h3 .flow { display: flex; animation: title-flow var(--dur, 8s) linear infinite; }
-/* 右下の小さな更新日 */
-.card .date { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+.card .date { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
 @keyframes title-flow { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .card.long:hover h3 .flow { animation: none; } }
 
