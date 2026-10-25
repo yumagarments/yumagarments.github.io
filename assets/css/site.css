@@ -67,7 +67,7 @@ aside .label { letter-spacing: .15em; }
 
 /* ---------- 記事ページ ---------- */
 .page { background: var(--card); border: 1px solid var(--ink); padding: clamp(20px, 4vw, 48px); }
-.page h1 { font: var(--dw) clamp(24px, 3vw, 34px)/1.25 var(--font-d); letter-spacing: var(--tr); margin: 10px 0 10px; }
+.page h1 { font: 400 clamp(24px, 3vw, 34px)/1.3 var(--font-d); letter-spacing: 0; margin: 10px 0 10px; }
 .fig { width: min(100%, 440px); aspect-ratio: 1 / 1; margin: 24px 0; border: 1px solid var(--ink); overflow: hidden; --bg: var(--card); }
 .fig img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .prose { line-height: 1.9; }
