@@ -88,7 +88,7 @@ p { margin: 0; }
 .related .cards { --per: 4; }
 
 /* ===== レイアウトのバリエーション ===== */
-.top.left { display: flex; justify-content: space-between; align-items: end; gap: 16px; text-align: left; padding-top: 28px; padding-bottom: 28px; }
+.top.left { display: flex; justify-content: space-between; align-items: end; gap: 16px; text-align: left; padding: 28px var(--margin); }
 .top.left .s { margin: 0; text-align: right; }
 .top.left .logo { font-size: 26px; }
 
@@ -343,7 +343,7 @@ const RENDER = {
   sheet: it => wrap(it, "card", `<div class="row-top s"><span>${it.no}</span><span class="m">${esc(it.meta)}</span></div>${it.art != null ? `<div class="img">${art(it.art)}</div>` : `<div class="body txt">${it.text}</div>`}<h3>${esc(it.title)}</h3>`),
   gallery: it => it.art != null
     ? wrap(it, "g-item", `<div class="g-img">${art(it.art)}</div><div class="g-cap"><div class="s m">${it.no} — ${esc(it.meta)}</div><div class="g-t">${esc(it.title)}</div></div>`)
-    : wrap(it, "g-item", `<div class="g-img g-txt"><div class="s m">${it.title}</div>${it.text}</div><div class="g-cap"><div class="s m">${it.no} — ${esc(it.meta)}</div></div>`),
+    : wrap(it, "g-item", `<div class="g-img g-txt"><div class="s m">${it.title}</div>${it.text}</div><div class="g-cap"><div class="s m">${it.no === "—" ? "" : it.no + " — "}${esc(it.meta)}</div></div>`),
   bleed: it => it.art != null
     ? wrap(it, "card bl", `${art(it.art)}<span class="chip">${esc(it.title)}</span><span class="chip2 s">${it.no} / ${esc(it.meta)}</span>`)
     : wrap(it, "card bl-txt", `<h3>${esc(it.title)}</h3><div class="body txt">${it.text}</div>`),
