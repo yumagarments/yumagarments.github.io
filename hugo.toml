@@ -1,43 +1,23 @@
-# サイト全体の設定。名前やリンクはここを書き換えてください
-baseURL = "https://example.com/"   # 公開時は GitHub Actions が自動で上書きします
+# サイト全体の設定
+# 名前・紹介文・連絡先は data/profile.yaml、デザイン（色・文字・余白）は data/design.json で変更します
+baseURL = "https://yumagarments.github.io/"
 locale = "ja"
-title = "Yuma's Portfolio"
-enableGitInfo = false
-
-[params]
-  author = "Yuma"
-  description = "技術メモ・制作物・お知らせをまとめた個人サイトです。"
-  github = "https://github.com/yumagarments"
-  x = ""                           # 例: https://x.com/xxxx （空なら非表示）
-
-[menus]
-  [[menus.main]]
-    name = "Blog"
-    pageRef = "/posts"
-    weight = 10
-  [[menus.main]]
-    name = "News"
-    pageRef = "/news"
-    weight = 20
-  [[menus.main]]
-    name = "Tags"
-    pageRef = "/tags"
-    weight = 30
-  [[menus.main]]
-    name = "About"
-    pageRef = "/about"
-    weight = 40
+title = "Yuma Garments"
 
 [taxonomies]
   tag = "tags"
 
 [markup]
-  [markup.highlight]
-    noClasses = false
-    style = "github"
   [markup.goldmark.renderer]
     unsafe = true
+  [markup.highlight]
+    noClasses = true
+    style = "bw"
 
 [outputs]
   home = ["HTML", "RSS"]
   section = ["HTML", "RSS"]
+
+[params]
+  # 閲覧数の計測（GoatCounter）。https://www.goatcounter.com で登録したコード名を入れると有効になります
+  goatcounter = ""

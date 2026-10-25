@@ -1,22 +1,27 @@
 <!doctype html>
-<html lang="{{ site.Language.Locale }}">
+<html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
-  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}">
-  <meta property="og:title" content="{{ .Title }}">
+  {{ $p := hugo.Data.profile }}
+  <title>{{ if .IsHome }}{{ $p.name }}{{ else }}{{ .Title }} | {{ $p.name }}{{ end }}</title>
+  <meta name="description" content="{{ with .Summary }}{{ . | plainify | truncate 120 }}{{ else }}{{ $p.about }}{{ end }}">
+  <meta property="og:title" content="{{ if .IsHome }}{{ $p.name }}{{ else }}{{ .Title }}{{ end }}">
   <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
   <meta property="og:url" content="{{ .Permalink }}">
-  {{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">{{ end }}
-  {{ $css := slice (resources.Get "css/main.css") (resources.Get "css/syntax.css") | resources.Concat "css/site.css" | minify | fingerprint }}
+  {{ with .Params.image }}<meta property="og:image" content="{{ . | absURL }}">{{ end }}
+  {{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ $p.name }}">{{ end }}
+  {{ partial "design-vars.html" . }}
+  {{ $css := resources.Get "css/site.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 </head>
 <body>
-  {{ partial "header.html" . }}
-  <main class="container">
-    {{ block "main" . }}{{ end }}
-  </main>
-  {{ partial "footer.html" . }}
+  <div class="frame split{{ if .IsPage }} is-page{{ end }}">
+    {{ partial "aside.html" . }}
+    <main>{{ block "main" . }}{{ end }}</main>
+  </div>
+  {{ $js := resources.Get "js/site.js" | minify | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+  {{ with site.Params.goatcounter }}<script data-goatcounter="https://{{ . }}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>{{ end }}
 </body>
 </html>

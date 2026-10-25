@@ -1,0 +1,1 @@
+{{ with .Params.image }}<img src="{{ . | relURL }}" alt="" loading="lazy">{{ else }}{{ $n := mod (len $.Title) 11 }}{{ if isset $.Params "art" }}{{ $n = $.Params.art }}{{ end }}<div class="art" data-art="{{ $n }}"></div>{{ end }}

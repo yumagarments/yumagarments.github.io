@@ -1,6 +1,12 @@
 {{ define "main" }}
-<h1>{{ .Title }}</h1>
-{{ with .Description }}<p class="muted">{{ . }}</p>{{ end }}
-{{ .Content }}
-{{ partial "post-list.html" .Pages }}
+<div class="list-head s"><span>{{ .Title }}</span><span class="m">{{ len .Pages }} entries</span></div>
+{{ if eq .Section "news" }}
+  <div class="rows">
+    {{ range .Pages }}<a class="row" href="{{ .RelPermalink }}"><span class="s m">{{ .Date.Format "2006.01.02" }}</span><span class="t">{{ .Title }}</span></a>{{ end }}
+  </div>
+{{ else }}
+  <div class="cards">
+    {{ $n := len .Pages }}{{ range $i, $p := .Pages }}{{ partial "card.html" (dict "page" $p "no" (printf "%02d" (sub $n $i))) }}{{ end }}
+  </div>
+{{ end }}
 {{ end }}

@@ -1,0 +1,39 @@
+{{ $d := hugo.Data.design }}
+{{ $t := $d.type }}{{ $g := $d.grid }}
+{{ $google := slice "IBM Plex Mono" "Space Mono" "JetBrains Mono" "VT323" "DotGothic16" "LINE Seed JP" "Inter" "Inter Tight" "Archivo" "Space Grotesk" }}
+{{ $single := slice "VT323" "DotGothic16" }}
+{{ $fams := slice }}
+{{ range uniq (slice $t.display $t.body $t.mono) }}
+  {{ if in $google . }}
+    {{ $f := replace . " " "+" }}
+    {{ if not (in $single .) }}{{ $f = printf "%s:wght@400;500;700" $f }}{{ end }}
+    {{ $fams = $fams | append (printf "family=%s" $f) }}
+  {{ end }}
+{{ end }}
+{{ with $fams }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?{{ delimit . "&" | safeURL }}&display=swap">
+{{ end }}
+{{ $stack := `"Helvetica Neue", Helvetica, Arial, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif` }}
+{{ $perIn := sub $g.per 1 }}{{ if lt $perIn 2 }}{{ $perIn = 2 }}{{ end }}
+{{ $vars := slice }}
+{{ range $k, $v := $d.colors }}{{ $vars = $vars | append (printf "--%s:%s" $k $v) }}{{ end }}
+{{ $vars = $vars | append
+  (printf `--font-d:"%s",%s` $t.display $stack)
+  (printf `--font-b:"%s",%s` $t.body $stack)
+  (printf `--font-m:"%s",ui-monospace,Menlo,"Hiragino Sans",monospace` $t.mono)
+  (printf "--mcase:%s" (cond $t.monoUpper "uppercase" "none"))
+  (printf "--dw:%v" $t.weight)
+  (printf "--ts:%vpx" $t.titleSize)
+  (printf "--tr:%vem" $t.tracking)
+  (printf "--bs:%vpx" $t.bodySize)
+  (printf "--btr:%vem" $t.bodyTracking)
+  (printf "--gap:%vpx" $g.gap)
+  (printf "--margin:%vpx" $g.margin)
+  (printf "--maxw:%vpx" $g.maxw)
+  (printf "--radius:%vpx" $g.radius)
+  (printf "--pad:%vpx" $g.pad)
+  (printf "--per-in:%v" $perIn)
+}}
+<style>:root{ {{- delimit $vars ";" | safeCSS -}} }</style>

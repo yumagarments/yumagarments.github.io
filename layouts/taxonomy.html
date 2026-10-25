@@ -1,8 +1,6 @@
 {{ define "main" }}
-<h1>{{ .Title }}</h1>
-<p class="tag-cloud">
-  {{ range .Data.Terms.ByCount }}
-  <a class="tag" href="{{ .Page.RelPermalink }}">#{{ .Page.Title }} <small>({{ .Count }})</small></a>
-  {{ end }}
-</p>
+<div class="list-head s"><span>{{ .Title }}</span></div>
+<div class="rows">
+  {{ range .Data.Terms.ByCount }}<a class="row" href="{{ .Page.RelPermalink }}"><span class="s m">{{ .Count }}</span><span class="t">#{{ .Page.Title }}</span></a>{{ end }}
+</div>
 {{ end }}

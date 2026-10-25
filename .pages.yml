@@ -1,0 +1,69 @@
+# Pages CMS（https://app.pagescms.org）の設定：ブラウザから記事を編集するための画面定義
+media:
+  input: static/images
+  output: /images
+
+content:
+  - name: posts
+    label: Notes（記事）
+    type: collection
+    path: content/posts
+    exclude: [_index.md]
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, draft]
+    fields:
+      - { name: title, label: タイトル, type: string, required: true }
+      - { name: date, label: 日付, type: date }
+      - { name: tags, label: タグ（例 Illusion / Perspective / Tech）, type: string, list: true }
+      - { name: image, label: カード画像（正方形に切り抜かれます）, type: image }
+      - { name: draft, label: 下書き（オンの間は公開されません）, type: boolean }
+      - { name: body, label: 本文, type: rich-text }
+
+  - name: works
+    label: Works（作品）
+    type: collection
+    path: content/works
+    exclude: [_index.md]
+    filename: "{primary}.md"
+    view:
+      fields: [title, meta, date]
+    fields:
+      - { name: title, label: 作品名, type: string, required: true }
+      - { name: meta, label: 種類・年（例 Installation, 2026）, type: string }
+      - { name: date, label: 日付（新しい順に並びます）, type: date }
+      - { name: tags, label: タグ, type: string, list: true }
+      - { name: image, label: カード画像（正方形に切り抜かれます）, type: image }
+      - { name: draft, label: 下書き, type: boolean }
+      - { name: body, label: 説明, type: rich-text }
+
+  - name: news
+    label: News（お知らせ）
+    type: collection
+    path: content/news
+    exclude: [_index.md]
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date]
+    fields:
+      - { name: title, label: タイトル, type: string, required: true }
+      - { name: date, label: 日付, type: date }
+      - { name: draft, label: 下書き, type: boolean }
+      - { name: body, label: 本文, type: rich-text }
+
+  - name: profile
+    label: プロフィール
+    type: file
+    path: data/profile.yaml
+    fields:
+      - { name: name, label: 名前, type: string }
+      - { name: tagline, label: 肩書き, type: string }
+      - { name: about, label: 紹介文, type: text }
+      - name: links
+        label: Info（連絡先）
+        type: object
+        list: true
+        fields:
+          - { name: label, label: 見出し（例 instagram）, type: string }
+          - { name: value, label: 表示する文字, type: string }
+          - { name: url, label: リンク先 URL（なしでも可）, type: string }

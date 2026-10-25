@@ -1,0 +1,89 @@
+/* 色・文字・余白などの値は data/design.json から CSS 変数として読み込まれます（layouts/_partials/design-vars.html） */
+* { box-sizing: border-box; }
+html, body { margin: 0; overflow-x: clip; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-b); font-size: var(--bs); line-height: 1.6; letter-spacing: var(--btr);
+  font-feature-settings: "palt"; -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+p { margin: 0; }
+img { max-width: 100%; }
+.frame { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--margin); }
+.s { font-family: var(--font-m); font-size: 10.5px; line-height: 1.5; letter-spacing: .02em; text-transform: var(--mcase); }
+.m { color: var(--muted); }
+.lnk { color: var(--accent); }
+.lnk:hover, a.s:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- 左サイドバー + 右コンテンツ ---------- */
+.split { display: grid; grid-template-columns: minmax(220px, 3fr) 9fr; gap: calc(var(--gap) * 2 + 40px); padding-top: 32px; padding-bottom: 80px; }
+.split > main { min-width: 0; }
+aside { position: sticky; top: 24px; align-self: start; }
+.logo { font: var(--dw) 30px/1.05 var(--font-d); letter-spacing: -0.05em; display: inline-block; }
+.tagline { margin: 6px 0 28px; }
+aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
+.sec-body { margin-top: 6px; }
+.lines div { padding: 1px 0; }
+.lines .s { display: inline-block; min-width: 7.5em; }
+.filters { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.filters a { color: var(--muted); }
+.filters a.on, .filters a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.foot { margin-top: 8px; }
+
+/* ---------- カード（標本シート風：点線で区切った正方形） ---------- */
+.cards { display: grid; grid-template-columns: repeat(var(--per-in), minmax(0, 1fr)); border-top: 1px dashed var(--edge); border-left: 1px dashed var(--edge); }
+.card {
+  aspect-ratio: 1 / 1; background: var(--card); padding: var(--pad); border-radius: var(--radius);
+  border-right: 1px dashed var(--edge); border-bottom: 1px dashed var(--edge);
+  display: flex; flex-direction: column; gap: 8px; min-width: 0; overflow: hidden;
+}
+.card[hidden] { display: none; }
+.row-top { display: flex; justify-content: space-between; gap: 8px; }
+.row-top .m { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card .img { margin: auto; width: 60%; aspect-ratio: 1 / 1; overflow: hidden; --bg: var(--card); }
+.card .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card .img svg, .art svg { width: 100%; height: 100%; display: block; }
+.art { width: 100%; height: 100%; }
+.card h3 { margin: 0; font: var(--dw) var(--ts)/1.3 var(--font-d); letter-spacing: var(--tr); }
+.card:hover .img svg, .card:hover .img img { filter: invert(1); }
+.card:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
+
+.list-head { display: flex; justify-content: space-between; border-top: 1px solid var(--ink); padding: 8px 0 14px; }
+.rows { border-top: 1px dashed var(--edge); }
+.row { display: grid; grid-template-columns: 8em 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--edge); align-items: baseline; }
+.row .t { font: var(--dw) var(--ts)/1.35 var(--font-d); letter-spacing: var(--tr); }
+.row:hover .t { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- 記事ページ ---------- */
+.page { background: var(--card); border: 1px dashed var(--edge); padding: clamp(20px, 4vw, 48px); }
+.page h1 { font: var(--dw) clamp(24px, 3vw, 34px)/1.25 var(--font-d); letter-spacing: var(--tr); margin: 10px 0 10px; }
+.fig { width: min(100%, 440px); aspect-ratio: 1 / 1; margin: 24px 0; border: 1px dashed var(--edge); overflow: hidden; --bg: var(--card); }
+.fig img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.prose { line-height: 1.9; }
+.prose > * + * { margin-top: 1em; }
+.prose h2 { font: 700 1.15em/1.4 var(--font-d); margin-top: 2em; }
+.prose h3 { font: 700 1em/1.4 var(--font-d); margin-top: 1.6em; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.prose img { display: block; height: auto; }
+.prose pre { font: 12px/1.6 var(--font-m); letter-spacing: 0; background: var(--bg) !important; color: var(--ink) !important; padding: 12px; overflow-x: auto; }
+.prose code { font-family: var(--font-m); font-size: .88em; letter-spacing: 0; }
+.prose ul, .prose ol { padding-left: 1.3em; }
+.prose blockquote { margin-left: 0; padding-left: 1em; border-left: 2px solid var(--ink); color: var(--muted); }
+.related { margin-top: 48px; }
+
+/* ---------- スマホ ---------- */
+@media (max-width: 900px) {
+  .split { grid-template-columns: 1fr; gap: 28px; padding-top: 24px; }
+  aside { position: static; }
+  .is-page .aside-body { display: none; }
+  .tagline { margin-bottom: 0; }
+  .aside-body { margin-top: 24px; }
+}
+@media (max-width: 560px) {
+  :root { --margin: 16px; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { padding: 10px; }
+  .card h3 { font-size: 13px; }
+  .card .img { width: 72%; }
+  .row { grid-template-columns: 1fr; gap: 2px; }
+}

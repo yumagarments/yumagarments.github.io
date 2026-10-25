@@ -1,0 +1,33 @@
+{{ $p := hugo.Data.profile }}
+<aside>
+  <a class="logo" href="{{ site.Home.RelPermalink }}">{{ $p.name }}</a>
+  <p class="s m tagline">{{ $p.tagline }}</p>
+  <div class="aside-body">
+    <section><div class="s m">About</div><p class="sec-body">{{ $p.about }}</p></section>
+    <section><div class="s m">Info</div>
+      <div class="sec-body lines">
+        {{ range $p.links }}{{ $l := . }}
+        <div><span class="s m">{{ $l.label }}</span>{{ if $l.url }}<a class="lnk" href="{{ $l.url }}">{{ $l.value }}</a>{{ else }}{{ $l.value }}{{ end }}</div>
+        {{ end }}
+      </div>
+    </section>
+    {{ with first 3 (where site.RegularPages "Section" "news") }}
+    <section><div class="s m">News</div>
+      <div class="sec-body lines">
+        {{ range . }}<div><span class="s m">{{ .Date.Format "2006.01.02" }}</span><br><a class="lnk" href="{{ .RelPermalink }}">{{ .Title }}</a></div>{{ end }}
+        <div><a class="s m" href="{{ "news/" | relURL }}">All news →</a></div>
+      </div>
+    </section>
+    {{ end }}
+    <section><div class="s m">Index</div>
+      <div class="sec-body filters s">
+        {{ $home := site.Home.RelPermalink }}
+        <a data-f="all" href="{{ $home }}#f=all">All</a>
+        <a data-f="works" href="{{ $home }}#f=works">Works</a>
+        <a data-f="posts" href="{{ $home }}#f=posts">Notes</a>
+        {{ range $key, $tax := site.Taxonomies.tags }}<a data-f="{{ $key }}" href="{{ $home }}#f={{ $key }}">{{ $tax.Page.Title }}</a>{{ end }}
+      </div>
+    </section>
+  </div>
+  <p class="s m foot">© {{ now.Year }} {{ $p.name }} · <a href="{{ "index.xml" | relURL }}">RSS</a></p>
+</aside>

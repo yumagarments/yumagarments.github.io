@@ -1,4 +1,4 @@
 ---
 title: "News"
-description: "お知らせ・告知"
+description: "お知らせ"
 ---

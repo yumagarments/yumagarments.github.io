@@ -1,0 +1,48 @@
+{
+  "preset": "Custom",
+  "colors": {
+    "bg": "#efefed",
+    "card": "#f7f7f5",
+    "edge": "#c9c9c6",
+    "ink": "#000000",
+    "muted": "#7a7a7a",
+    "line": "#000000",
+    "accent": "#111111"
+  },
+  "type": {
+    "display": "Helvetica Neue",
+    "weight": 700,
+    "titleSize": 16,
+    "tracking": -0.02,
+    "body": "Helvetica Neue",
+    "bodySize": 15,
+    "bodyTracking": 0.1,
+    "mono": "IBM Plex Mono",
+    "monoUpper": true
+  },
+  "grid": {
+    "layout": "split",
+    "per": 2,
+    "gap": 0,
+    "margin": 32,
+    "maxw": 1400,
+    "radius": 0,
+    "pad": 14,
+    "cardStyle": "flat",
+    "image": "fill",
+    "lines": "none",
+    "lineStyle": "dashed",
+    "lineOpacity": 0.18,
+    "lineWidth": 1,
+    "rows": true
+  },
+  "content": {
+    "name": "Yuma Garments",
+    "tagline": "visual artist Motion graphic",
+    "about": "パースペクティブを軸に、錯視を扱う映像作家",
+    "showInfo": true,
+    "showNews": true,
+    "showWorks": true,
+    "showPosts": true
+  }
+}

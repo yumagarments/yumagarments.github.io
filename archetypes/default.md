@@ -2,6 +2,6 @@
 title: "{{ replace .File.ContentBaseName "-" " " | title }}"
 date: {{ .Date }}
 tags: []
-summary: ""
+image: ""
 draft: true
 ---

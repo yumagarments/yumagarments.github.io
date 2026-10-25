@@ -1,4 +1,4 @@
 ---
-title: "Blog"
-description: "技術メモ・学んだこと"
+title: "Notes"
+description: "制作ノート・技術メモ"
 ---

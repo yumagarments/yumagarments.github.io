@@ -1,0 +1,15 @@
+# プロフィール（サイト左側に表示）
+name: Yuma Garments
+tagline: visual artist Motion graphic
+about: パースペクティブを軸に、錯視を扱う映像作家
+links:
+  - label: contact
+    value: yuma(at)example.com
+  - label: github
+    value: yumagarments
+    url: https://github.com/yumagarments
+  - label: instagram
+    value: "@yuma"
+    url: https://www.instagram.com/
+  - label: based in
+    value: Tokyo, JAPAN
