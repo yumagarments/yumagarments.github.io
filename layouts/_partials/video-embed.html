@@ -1,0 +1,5 @@
+{{- $v := partial "video.html" . -}}
+{{- with $v.embed -}}
+{{- $tall := le (div (float $v.w) (float $v.h)) 1.2 -}}
+<span class="video{{ if $tall }} tall{{ end }}" style="{{ printf "aspect-ratio: %v / %v" $v.w $v.h | safeCSS }}"><iframe src="{{ . }}" title="video" loading="lazy" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></span>
+{{- end -}}

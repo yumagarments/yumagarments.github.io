@@ -1,0 +1,18 @@
+{{- $u := . -}}
+{{- $r := dict -}}
+{{- with findRESubmatch `(?:youtube\.com/(?:watch\?(?:.*&)?v=|shorts/|embed/)|youtu\.be/)([A-Za-z0-9_-]{11})` $u 1 -}}
+  {{- $id := index (index . 0) 1 -}}
+  {{- $r = dict "embed" (printf "https://www.youtube-nocookie.com/embed/%s" $id) "thumb" (printf "https://i.ytimg.com/vi/%s/maxresdefault.jpg" $id) "w" 16 "h" 9 -}}
+{{- else -}}
+  {{- with findRESubmatch `vimeo\.com/(?:manage/videos/|video/)?([0-9]+)` $u 1 -}}
+    {{- $id := index (index . 0) 1 -}}
+    {{- $r = dict "embed" (printf "https://player.vimeo.com/video/%s?dnt=1" $id) "w" 16 "h" 9 -}}
+    {{- with try (resources.GetRemote (printf "https://vimeo.com/api/oembed.json?url=https://vimeo.com/%s&width=1280" $id)) -}}
+      {{- with .Value -}}
+        {{- $j := .Content | transform.Unmarshal -}}
+        {{- $r = merge $r (dict "thumb" $j.thumbnail_url "w" $j.width "h" $j.height) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $r -}}

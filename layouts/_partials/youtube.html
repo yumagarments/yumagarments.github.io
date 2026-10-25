@@ -1,4 +1,0 @@
-{{- with findRESubmatch `(?:youtube\.com/(?:watch\?(?:.*&)?v=|shorts/|embed/)|youtu\.be/)([A-Za-z0-9_-]{11})` . 1 -}}
-{{- $id := index (index . 0) 1 -}}
-<span class="video"><iframe src="https://www.youtube-nocookie.com/embed/{{ $id }}" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></span>
-{{- end -}}
