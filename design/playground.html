@@ -6,233 +6,152 @@
 <title>Design Playground</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Inter+Tight:wght@500;700;800&family=Anton&family=Archivo+Black&family=Bebas+Neue&family=DM+Serif+Display&family=Dela+Gothic+One&family=Syne:wght@700;800&family=Unbounded:wght@600;800&family=Space+Grotesk:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@400;500;600;700;800;900&family=Archivo:wght@400;500;700;800;900&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;700&family=DotGothic16&family=VT323&display=swap">
 <style>
-/* ===== サイト本体（パラメータは CSS 変数で注入） ===== */
+/* ===== サイト本体：すべて CSS 変数（パラメータ）で制御 ===== */
 :root {
-  --bg: #efe6d2; --ink: #1a1a1a; --muted: #6b6457; --line: #1a1a1a; --dark: #161616;
-  --a1: #e8452c; --a2: #2c4fa3; --a3: #3a8a4a; --a4: #f2a531;
-  --font-display: "Archivo Black", sans-serif; --display-weight: 400;
-  --font-body: "Zen Kaku Gothic New", sans-serif; --body-size: 15px;
-  --ds: 1; --tracking: -0.05em; --leading: .84; --body-tracking: -0.01em; --display-case: uppercase;
-  --maxw: 1200px; --cols: 3; --cols-md: 2; --gap: 0px; --bw: 1px; --radius: 0px;
-  --pad: 24px; --section: 96px; --ratio: 4 / 3;
+  --bg: #f4f4f1; --ink: #000000; --muted: #777777; --line: #000000; --accent: #000000;
+  --font-d: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif; --dw: 700;
+  --font-b: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif;
+  --font-m: "IBM Plex Mono", ui-monospace, monospace; --mcase: uppercase;
+  --ds: 1; --tr: -0.055em; --ld: .84; --upper: none; --bs: 13px; --btr: -0.01em;
+  --cols: 12; --gutter: 0px; --margin: 40px; --maxw: 1600px; --section: 120px;
+  --lo: .3; --lw: 1px; --ls: dashed; --cell: 100px; --tiles: 4; --works: 2;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; overflow-x: clip; }
 body {
-  background: var(--bg); color: var(--ink);
-  font-family: var(--font-body); font-size: var(--body-size); line-height: 1.75;
-  -webkit-font-smoothing: antialiased; overflow-x: hidden;
-  letter-spacing: var(--body-tracking); font-feature-settings: "palt";
+  position: relative; min-height: 100vh; background: var(--bg); color: var(--ink);
+  font-family: var(--font-b); font-size: var(--bs); line-height: 1.5; letter-spacing: var(--btr);
+  font-feature-settings: "palt"; -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; text-decoration: none; }
-.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
-.display {
-  font-family: var(--font-display); font-weight: var(--display-weight);
-  letter-spacing: var(--tracking); text-transform: var(--display-case); line-height: var(--leading);
-}
-.eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
-.muted { color: var(--muted); }
+p { margin: 0; }
+#app { position: relative; z-index: 1; }
+.frame { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--margin); }
+.g { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--gutter); }
+.d { font-family: var(--font-d); font-weight: var(--dw); letter-spacing: var(--tr); line-height: var(--ld); text-transform: var(--upper); }
+/* 小さなラベル：等幅フォントで「技術書」風に */
+.s { font-family: var(--font-m); font-size: 10.5px; line-height: 1.45; letter-spacing: .02em; text-transform: var(--mcase); }
+.b { font-weight: 700; }
+.m { color: var(--muted); }
+.r { text-align: right; }
+.u { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { opacity: .55; }
+
+/* グリッド線（オーバーレイ） */
+.overlay { position: absolute; inset: 0; pointer-events: none; opacity: var(--lo); overflow: hidden; }
+.overlay.back { z-index: 0; } .overlay.front { z-index: 50; } .overlay.none { display: none; }
+.ov-inner { position: relative; height: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--margin); }
+.ov-cols { height: 100%; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--gutter); border-right: var(--lw) var(--ls) var(--line); }
+.ov-cols i { border-left: var(--lw) var(--ls) var(--line); }
+.ov-cols.gut i { background: color-mix(in srgb, var(--line) 6%, transparent); }
+.ov-rows { position: absolute; top: 0; left: var(--margin); right: var(--margin); }
+.ov-rows b { display: block; height: var(--cell); border-top: var(--lw) var(--ls) var(--line); }
 
 /* header */
-.site-header { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: var(--bw) solid var(--line); }
-.site-header .wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; height: 60px; }
-.logo { font-family: var(--font-display); font-weight: var(--display-weight); text-transform: var(--display-case); letter-spacing: var(--tracking); font-size: 18px; }
-.nav { display: flex; gap: clamp(12px, 2.5vw, 32px); font-size: 13px; font-weight: 500; }
-.nav a { position: relative; }
-.nav a:hover { color: var(--a1); }
-.head-cta { justify-self: end; background: var(--ink); color: var(--bg); font-size: 11px; font-weight: 700; letter-spacing: .1em; padding: 8px 14px; border-radius: 999px; text-transform: uppercase; }
-.head-cta:hover { background: var(--a1); }
+.top { position: sticky; top: 0; z-index: 40; background: var(--bg); border-bottom: var(--lw) solid var(--ink); }
+.top .g { padding-top: 12px; padding-bottom: 12px; align-items: start; }
+.top nav a { display: inline-block; margin-right: 1.4em; }
+.top nav a.on { text-decoration: underline; text-underline-offset: 3px; }
+
+/* 装飾：トンボ枠・縦書き・登録商標・バーコード */
+.crop { position: relative; display: inline-block; padding: 8px 12px; line-height: .95;
+  background:
+    linear-gradient(var(--ink), var(--ink)) top left / 12px 2px no-repeat, linear-gradient(var(--ink), var(--ink)) top left / 2px 12px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) top right / 12px 2px no-repeat, linear-gradient(var(--ink), var(--ink)) top right / 2px 12px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) bottom left / 12px 2px no-repeat, linear-gradient(var(--ink), var(--ink)) bottom left / 2px 12px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) bottom right / 12px 2px no-repeat, linear-gradient(var(--ink), var(--ink)) bottom right / 2px 12px no-repeat; }
+.crop .d { font-size: 2.4em; letter-spacing: -0.04em; }
+.vtext { position: fixed; left: calc(var(--margin) / 2 - 7px); top: 72px; z-index: 30; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; display: flex; gap: 14px; align-items: center; }
+.vtext i { display: block; width: 7px; height: 64px; background: var(--ink); }
+.marks { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.reg { width: 46px; height: 46px; border: 3px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font: 700 26px/1 var(--font-d); }
+.bars { display: flex; gap: 3px; height: 46px; align-items: stretch; }
+.bars i { display: block; background: var(--ink); }
+.status div { display: grid; grid-template-columns: 9em 1fr; border-top: var(--lw) var(--ls) color-mix(in srgb, var(--ink) 40%, transparent); padding: 3px 0; }
+.status .hl { background: var(--ink); color: var(--bg); padding: 0 4px; }
 
 /* hero */
-.hero { padding: calc(var(--section) * .6) 0 calc(var(--section) * .5); position: relative; isolation: isolate; overflow: hidden; }
-.hero > * { position: relative; z-index: 1; }
-.hero .floor { position: absolute; z-index: 0; left: -40%; right: -40%; bottom: -10%; height: 70%; pointer-events: none;
-  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 64px 64px; transform: perspective(420px) rotateX(62deg); transform-origin: 50% 100%;
-  opacity: .28; animation: floor 3s linear infinite;
-  -webkit-mask-image: linear-gradient(to top, #000 30%, transparent); mask-image: linear-gradient(to top, #000 30%, transparent); }
-@keyframes floor { to { background-position: 0 64px; } }
-.hero h1 { text-shadow: var(--depth-shadow); }
-@media (prefers-reduced-motion: reduce) { .hero .floor, .marquee-track { animation: none; } }
-.hero-meta { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
-.hero h1 { margin: 0; font-size: calc(var(--ds) * clamp(3.2rem, 13vw, 11.5rem)); }
-.hero.center { text-align: center; }
-.hero-sub { max-width: 36em; margin: 28px 0 0; font-size: 1.05em; }
-.hero.center .hero-sub { margin-left: auto; margin-right: auto; }
-.hero-badges { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
-.hero.center .hero-badges { justify-content: center; }
-.badge { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; color: var(--bg); font-weight: 900; font-size: 13px; }
+.hero { padding-top: 16px; }
+.h-xl { font-size: calc(var(--ds) * min(13.2vw, var(--maxw) * .132)); margin: 0 0 0 -.045em; padding: .06em 0 .1em; }
+.hero-row { margin-top: 24px; align-items: start; row-gap: 24px; }
+.lead { font-size: 1.45em; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; }
+.sq { aspect-ratio: 1 / 1; overflow: hidden; background: var(--bg); }
+.sq svg { width: 100%; height: 100%; display: block; }
 
-/* marquee */
-.marquee { background: var(--dark); color: var(--a4); overflow: hidden; border-top: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); }
-.marquee-track { display: flex; width: max-content; animation: scroll 28s linear infinite; }
-.marquee span { padding: 14px 0; font-size: clamp(18px, 2.4vw, 28px); white-space: nowrap; }
-.marquee span::after { content: "✦"; margin: 0 .8em; color: var(--a1); }
-@keyframes scroll { to { transform: translateX(-50%); } }
+/* section */
+.sec { margin-top: var(--section); }
+.sec-h { border-top: var(--lw) solid var(--ink); padding: 10px 0 0; margin-bottom: 28px; row-gap: 8px; }
+.sec-title { font-size: calc(var(--ds) * 3.2em); margin-top: 18px; }
+.filters button { font: inherit; text-transform: inherit; background: none; border: 0; padding: 0; margin-right: 1em; color: var(--muted); cursor: pointer; }
+.filters button.on { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
-/* section head */
-section.block { padding: var(--section) 0 0; }
-.sec-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 28px; }
-.sec-head h2 { margin: 0; font-size: calc(var(--ds) * clamp(2.2rem, 6vw, 4.5rem)); }
-.pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.pill { font: inherit; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
-.pill.on, .pill:hover { background: var(--ink); color: var(--bg); }
+/* tiles（記事・作品：すべて正方形） */
+.tiles { display: grid; grid-template-columns: repeat(var(--tiles), minmax(0, 1fr)); column-gap: var(--gutter); row-gap: calc(var(--gutter) + 36px); }
+.tiles.works { grid-template-columns: repeat(var(--works), minmax(0, 1fr)); }
+.tile { display: block; }
+.tile .sq { outline: var(--lw) solid var(--ink); outline-offset: calc(var(--lw) * -1); }
+.tile:hover { opacity: 1; }
+.tile:hover .sq svg { filter: invert(1); }
+.cap { display: grid; grid-template-columns: 2.8em 1fr auto; gap: 0 8px; padding: 8px 12px 0 0; }
+.cap .t { grid-column: 2 / -1; font-family: var(--font-b); text-transform: none; font-size: 1.3em; line-height: 1.15; font-weight: 700; letter-spacing: -0.03em; margin-top: 4px; }
+.tile:hover .t { text-decoration: underline; text-underline-offset: 3px; }
 
-/* card grid */
-.grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: var(--gap); }
-.grid.lined { gap: var(--bw); background: var(--line); border: var(--bw) solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.card { background: var(--bg); padding: var(--pad); display: flex; flex-direction: column; gap: 14px; border-radius: var(--radius); }
-.art { transform-style: preserve-3d; transition: transform .2s ease-out; will-change: transform; }
-.grid:not(.lined) .card { border: var(--bw) solid var(--line); }
-.grid.lined .card { border-radius: 0; }
-.card-top { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
-.tag { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; }
-.art { aspect-ratio: var(--ratio); overflow: hidden; border-radius: calc(var(--radius) * .6); }
-.art svg { width: 100%; height: 100%; display: block; transition: transform .5s ease; }
-.card:hover .art svg { transform: scale(1.05); }
-.card h3 { margin: 0; font-size: 1.15em; line-height: 1.45; font-weight: 700; }
-.card p { margin: 0; font-size: .88em; color: var(--muted); }
-.more { margin-top: auto; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; }
-.card:hover .more { color: var(--a1); }
-.card.hide { display: none; }
-
-/* news band */
-.news { margin-top: var(--section); background: var(--a2); color: #fff; border-top: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); }
-.news .wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(24px, 5vw, 64px); padding-top: calc(var(--section) * .7); padding-bottom: calc(var(--section) * .7); align-items: center; }
-.news h2 { margin: 0 0 24px; font-size: calc(var(--ds) * clamp(2.2rem, 6vw, 4.5rem)); }
-.news-item { display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding: 16px 0; border-top: 1px solid rgba(255,255,255,.35); }
-.news-item time { font-size: 12px; font-weight: 700; opacity: .8; padding-top: 3px; }
-.news-item b { display: block; font-size: 1.15em; margin-bottom: 2px; }
-.news-item span { font-size: .88em; opacity: .85; }
-.poster { aspect-ratio: 3 / 4; border-radius: var(--radius); overflow: hidden; box-shadow: 10px 10px 0 var(--dark); }
-.poster svg { width: 100%; height: 100%; display: block; }
-
-/* works tiles */
-.works { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
-.work { position: relative; aspect-ratio: 4 / 5; padding: var(--pad); color: #fff; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border-radius: var(--radius); border: var(--bw) solid var(--line); }
-.work svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; transition: transform .6s ease; }
-.work:hover svg { transform: rotate(-4deg) scale(1.08); }
-.work > * { position: relative; z-index: 1; }
-
-.work .num, .work > div { align-self: flex-start; background: var(--dark); color: var(--bg); padding: 6px 12px; border-radius: calc(var(--radius) * .5); }
-.work .num { font-family: var(--font-display); font-weight: var(--display-weight); font-size: 3.5em; line-height: 1; }
-.work b { font-size: 1.2em; display: block; }
-.work span { font-size: .85em; opacity: .9; }
+/* news */
+.row { border-top: var(--lw) solid color-mix(in srgb, var(--ink) 25%, transparent); padding: 10px 0 12px; align-items: baseline; }
+.row:last-child { border-bottom: var(--lw) solid color-mix(in srgb, var(--ink) 25%, transparent); }
+.row .t { font-size: 1.25em; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
+.row:hover { opacity: 1; background: var(--ink); color: var(--bg); }
+.row:hover .m { color: var(--bg); }
 
 /* about */
-.about { display: grid; grid-template-columns: auto 1fr; border: var(--bw) solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.about-side { background: var(--a3); color: var(--bg); padding: 24px 18px; display: flex; align-items: center; justify-content: center; }
-.about-side span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: calc(var(--ds) * clamp(3rem, 8vw, 6.5rem)); }
-.about-body { padding: clamp(24px, 4vw, 48px); display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-.about-body .role { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--a1); margin: 0 0 6px; }
-.about-body h3 { margin: 0 0 10px; font-size: 1.4em; }
-.skill-row { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--line); padding: 8px 0; font-size: .92em; }
-.skill-row em { font-style: normal; color: var(--muted); }
+.about-txt { font-size: 1.9em; line-height: 1.12; letter-spacing: -0.035em; font-weight: 500; }
+.list div { display: flex; justify-content: space-between; border-top: var(--lw) var(--ls) color-mix(in srgb, var(--ink) 40%, transparent); padding: 5px 0; }
 
 /* footer */
-.site-footer { margin-top: var(--section); background: var(--dark); color: var(--bg); }
-.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; border-left: 1px solid rgba(255,255,255,.2); }
-.foot-grid > div { padding: 40px 24px; border-right: 1px solid rgba(255,255,255,.2); }
-.foot-grid h4 { margin: 0 0 12px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--a4); }
-.foot-grid a { display: block; font-size: .92em; opacity: .85; padding: 2px 0; }
-.foot-grid a:hover { color: var(--a4); opacity: 1; }
-.foot-logo { font-size: calc(var(--ds) * 2.6rem); color: var(--bg); }
-.foot-bottom { border-top: 1px solid rgba(255,255,255,.2); padding: 16px 0; font-size: 11px; letter-spacing: .1em; display: flex; justify-content: space-between; opacity: .7; }
+.foot { margin-top: var(--section); border-top: var(--lw) solid var(--ink); padding-bottom: 16px; }
+.foot .g { padding-top: 10px; }
+.wordmark { font-size: calc(var(--ds) * min(26vw, var(--maxw) * .26)); margin: .02em 0 0 -.05em; line-height: .78; }
 
-.is-hidden { display: none !important; }
-
-/* ===== 2011年ごろの「デフォルトっぽい」ブログ（テーマ変数に左右されない素の見た目） ===== */
-.raw, .raw-page { background: #fff; color: #333; font: 13px/1.65 var(--font-body); text-transform: none; letter-spacing: var(--body-tracking); }
-.raw a, .raw-page a { color: #0000ee; text-decoration: underline; }
-.raw a:visited, .raw-page a:visited { color: #551a8b; }
-.raw a:hover, .raw-page a:hover { color: #ff0000; }
-.raw { border: 1px solid #bbb; display: grid; grid-template-columns: 1fr 210px; }
-.raw-head { grid-column: 1 / -1; padding: 14px 18px; border-bottom: 1px solid #ccc; background: #eee; }
-.raw-head b { font: bold 24px/1 var(--font-display); letter-spacing: var(--tracking); color: #222; }
-.raw-head p { margin: 0; color: #777; font-size: 11px; }
-.raw-main { padding: 18px; border-right: 1px solid #ddd; min-width: 0; }
-.raw-post { overflow: hidden; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px dotted #999; }
-.raw-post:last-child { border-bottom: 0; margin-bottom: 0; }
-.thumb { float: left; width: 140px; height: 140px; margin: 3px 14px 6px 0; border: 1px solid #ccc; padding: 3px; background: #fff; }
-.thumb svg { width: 100%; height: 100%; display: block; }
-.raw-post h4 { font: bold 17px/1.25 var(--font-display); letter-spacing: -0.03em; margin: 0 0 3px; }
-.raw-meta { font-size: 11px; color: #888; margin-bottom: 6px; }
-.raw-post p { margin: 0 0 4px; }
-.raw-side { padding: 18px 14px; background: #f7f7f7; font-size: 12px; }
-.raw-side h5 { font-size: 12px; margin: 0 0 6px; padding: 2px 6px; background: #ddd; border-left: 4px solid #888; }
-.raw-side ul { margin: 0 0 18px; padding-left: 18px; }
-.raw-side .cur { font-weight: bold; }
-.raw-foot { grid-column: 1 / -1; text-align: center; font-size: 11px; color: #999; padding: 8px; border-top: 1px solid #ddd; background: #eee; }
-.counter { font-family: "Courier New", monospace; background: #000; color: #0f0; padding: 0 4px; letter-spacing: 2px; }
-
-/* 記事ページ */
-#article { display: none; }
-body.reading > .site-header, body.reading > main, body.reading > .site-footer { display: none; }
-body.reading #article { display: block; }
-.raw-page { min-height: 100vh; }
-.raw-page .bar { background: #333; color: #fff; padding: 8px 16px; font-size: 12px; }
-.raw-page .bar a { color: #fff; }
-.raw-page .body { max-width: 760px; margin: 0 auto; padding: 18px 16px 60px; }
-.raw-page .crumb { font-size: 11px; color: #888; margin-bottom: 12px; }
-.raw-page h1 { font: bold 30px/1.15 var(--font-display); letter-spacing: var(--tracking); margin: 0 0 6px; color: #111; }
-.raw-page .sq { width: min(100%, 420px); aspect-ratio: 1 / 1; border: 1px solid #ccc; padding: 4px; margin: 16px 0; }
-.raw-page .sq svg { width: 100%; height: 100%; display: block; }
-.raw-page h2 { font-size: 15px; border-bottom: 1px solid #ccc; padding-bottom: 2px; margin: 24px 0 8px; }
-.raw-page pre { background: #f4f4f4; border: 1px dashed #aaa; padding: 8px; font: 12px "Courier New", monospace; overflow-x: auto; }
-.raw-page .pager { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 8px 0; margin: 28px 0; font-size: 12px; }
-.raw-page textarea, .raw-page input { font: 12px var(--font-body); border: 1px solid #999; padding: 3px; }
-.raw-page .cmt textarea { width: 100%; height: 70px; }
+/* article */
+.art-head { padding-top: 16px; row-gap: 16px; }
+.art-title { font-size: calc(var(--ds) * min(6.4vw, var(--maxw) * .064)); margin: 0 0 0 -.03em; line-height: max(var(--ld), 1.05); }
+.meta div { border-top: var(--lw) var(--ls) color-mix(in srgb, var(--ink) 40%, transparent); padding: 5px 0; display: flex; justify-content: space-between; }
+.art-body { margin-top: 40px; row-gap: 32px; align-items: start; }
+.prose { font-size: 15px; line-height: 1.75; letter-spacing: 0; }
+.prose p + p { margin-top: 1em; }
+.prose h2 { font: 700 10.5px/1.4 var(--font-m); letter-spacing: .04em; text-transform: uppercase; border-top: var(--lw) solid var(--ink); padding-top: 8px; margin: 2.4em 0 .8em; }
+.prose pre { font: 12px/1.6 var(--font-m); border: var(--lw) var(--ls) var(--ink); padding: 12px; overflow-x: auto; }
+.prose ul { padding-left: 1.1em; }
+.pager { margin-top: var(--section); border-top: var(--lw) solid var(--ink); padding-top: 10px; }
+.pager .t { font-size: 1.6em; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-top: 6px; }
 
 @media (max-width: 720px) {
-  .raw { grid-template-columns: 1fr; }
-  .raw-main { border-right: 0; }
-  .raw-side { border-top: 1px solid #ddd; }
-  .thumb { width: 96px; height: 96px; }
+  :root { --cols: 4 !important; }
+  .g > [style*="grid-column"] { grid-column: 1 / -1 !important; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tiles.works { grid-template-columns: 1fr; }
+  .ov-cols i:nth-child(n + 5) { display: none; }
+  .top nav, .vtext { display: none; }
+  .h-xl { font-size: calc(var(--ds) * 17vw); }
+  .art-title { font-size: calc(var(--ds) * 11vw); }
+  .about-txt { font-size: 1.5em; }
+  .r { text-align: left; }
 }
 
-@media (max-width: 900px) {
-  .grid { grid-template-columns: repeat(var(--cols-md), 1fr); }
-  .news .wrap { grid-template-columns: 1fr; }
-  .poster { max-width: 360px; }
-  .about-body { grid-template-columns: 1fr; }
-}
-@media (max-width: 640px) {
-  .site-header .wrap { grid-template-columns: 1fr auto; }
-  .nav { display: none; }
-  .grid, .works { grid-template-columns: 1fr; }
-  .hero-meta { flex-direction: column; gap: 4px; }
-  .about { grid-template-columns: 1fr; }
-  .about-side span { writing-mode: horizontal-tb; transform: none; }
-  .foot-grid { grid-template-columns: 1fr; }
-  .work { aspect-ratio: 16 / 11; }
-}
-
-/* ===== 調整パネル（サイトの変数に影響されない独立スタイル） ===== */
-#panel-toggle {
-  position: fixed; right: 16px; bottom: 16px; z-index: 1000;
-  background: #111; color: #fff; border: 0; border-radius: 999px; padding: 12px 18px;
-  font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; cursor: pointer;
-  box-shadow: 0 6px 24px rgba(0,0,0,.25);
-}
-#panel {
-  position: fixed; top: 0; right: 0; bottom: 0; width: 340px; z-index: 999;
-  background: #fff; color: #222; border-left: 1px solid #ddd;
-  font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
-  display: flex; flex-direction: column; transform: translateX(100%); transition: transform .25s ease;
-  box-shadow: -8px 0 32px rgba(0,0,0,.12);
-}
+/* ===== 調整パネル（サイトの変数に影響されない） ===== */
+#panel-toggle { position: fixed; right: 16px; bottom: 16px; z-index: 1000; background: #111; color: #fff; border: 0; border-radius: 999px; padding: 12px 18px; font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; cursor: pointer; box-shadow: 0 6px 24px rgba(0,0,0,.25); letter-spacing: 0; }
+#panel { position: fixed; top: 0; right: 0; bottom: 0; width: 340px; z-index: 999; background: #fff; color: #222; border-left: 1px solid #ddd; font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; letter-spacing: 0; text-transform: none; display: flex; flex-direction: column; transform: translateX(100%); transition: transform .25s ease; box-shadow: -8px 0 32px rgba(0,0,0,.12); }
 #panel.open { transform: none; }
 #panel:not(.open) { box-shadow: none; visibility: hidden; transition: transform .25s ease, visibility 0s .25s; }
 #panel header { padding: 14px 16px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-#panel header b { font-size: 14px; }
 #panel .scroll { overflow-y: auto; flex: 1; padding: 0 16px 120px; }
 #panel details { border-bottom: 1px solid #eee; }
 #panel summary { padding: 12px 0; font-weight: 700; cursor: pointer; }
-#panel .row { display: grid; grid-template-columns: 96px 1fr 44px; gap: 8px; align-items: center; margin-bottom: 10px; }
-#panel .row label { color: #555; font-size: 12px; }
-#panel .row output { font-size: 11px; color: #888; text-align: right; font-variant-numeric: tabular-nums; }
+#panel .row2 { display: grid; grid-template-columns: 96px 1fr 48px; gap: 8px; align-items: center; margin-bottom: 10px; }
+#panel .row2 label { color: #555; font-size: 12px; }
+#panel .row2 output { font-size: 11px; color: #888; text-align: right; font-variant-numeric: tabular-nums; }
 #panel input[type=range] { width: 100%; }
 #panel input[type=color] { width: 100%; height: 28px; border: 1px solid #ddd; border-radius: 6px; padding: 0 2px; background: #fff; }
 #panel select, #panel input[type=text], #panel textarea { width: 100%; font: inherit; padding: 5px 6px; border: 1px solid #ccc; border-radius: 6px; background: #fff; color: #222; }
@@ -241,11 +160,11 @@ body.reading #article { display: block; }
 #panel .preset { border: 1px solid #ddd; border-radius: 8px; padding: 8px; background: #fafafa; cursor: pointer; text-align: left; font: inherit; color: #222; }
 #panel .preset:hover { border-color: #111; }
 #panel .swatches { display: flex; gap: 3px; margin-top: 6px; }
-#panel .swatches i { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,.1); }
+#panel .swatches i { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,.15); }
 #panel .btns { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
-#panel button.b { font: inherit; font-size: 12px; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; background: #fff; color: #222; cursor: pointer; }
-#panel button.b:hover { border-color: #111; }
-#panel button.b.primary { background: #111; color: #fff; border-color: #111; }
+#panel button.bt { font: inherit; font-size: 12px; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; background: #fff; color: #222; cursor: pointer; }
+#panel button.bt:hover { border-color: #111; }
+#panel button.bt.primary { background: #111; color: #fff; border-color: #111; }
 #panel .slot { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-top: 1px dashed #eee; }
 #panel .slot span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #panel .note { color: #888; font-size: 11px; margin: 4px 0 10px; }
@@ -255,98 +174,12 @@ body.reading #article { display: block; }
 </style>
 </head>
 <body>
+<div class="overlay front" id="overlay"><div class="ov-inner"><div class="ov-cols" id="ov-cols"></div><div class="ov-rows" id="ov-rows"></div></div></div>
+<div id="app"></div>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="logo" href="#top" data-bind="logo">YUMA</a>
-    <nav class="nav"><a href="#blog">Blog</a><a href="#news">News</a><a href="#works">Works</a><a href="#about">About</a></nav>
-    <a class="head-cta" href="#about">Contact</a>
-  </div>
-</header>
-
-<main id="top">
-  <div class="wrap">
-    <section class="hero" id="hero">
-      <div class="floor" id="floor"></div>
-      <div class="hero-meta eyebrow"><span>Media Art / Perspective / Optical Illusion</span><span>Tokyo — Since 2026</span></div>
-      <h1 class="display" data-bind="heroTitle"></h1>
-      <p class="hero-sub" data-bind="heroSub"></p>
-      <div class="hero-badges">
-        <span class="badge" style="background:var(--a1)">P</span>
-        <span class="badge" style="background:var(--a2)">I</span>
-        <span class="badge" style="background:var(--a3)">M</span>
-        <span class="badge" style="background:var(--a4); color:var(--ink)">★</span>
-      </div>
-    </section>
-  </div>
-
-  <div class="marquee" id="marquee"><div class="marquee-track display" id="marquee-track"></div></div>
-
-  <div class="wrap">
-    <section class="block" id="blog">
-      <div class="sec-head">
-        <h2 class="display">Blog</h2>
-        <div class="pills" id="pills"></div>
-      </div>
-      <div class="grid" id="grid"></div>
-      <div class="raw" id="rawblog"></div>
-    </section>
-  </div>
-
-  <section class="news" id="news">
-    <div class="wrap">
-      <div>
-        <h2 class="display">News</h2>
-        <div id="news-list"></div>
-      </div>
-      <div class="poster" id="poster"></div>
-    </div>
-  </section>
-
-  <div class="wrap">
-    <section class="block" id="works">
-      <div class="sec-head"><h2 class="display">Works</h2><span class="eyebrow muted">Selected works</span></div>
-      <div class="works" id="works-grid"></div>
-    </section>
-
-    <section class="block" id="about">
-      <div class="about">
-        <div class="about-side"><span class="display">About</span></div>
-        <div class="about-body">
-          <div>
-            <p class="role">Media Artist / Designer</p>
-            <h3>Yuma</h3>
-            <p class="muted">パースペクティブ（遠近法）を軸に、錯視を扱うメディアアーティスト / デザイナー。「見えているもの」と「そこにあるもの」のズレをテーマに、インスタレーション・映像・グラフィック・Web を制作しています。</p>
-          </div>
-          <div>
-            <div class="skill-row"><span>Anamorphosis / Perspective</span><em>Installation</em></div>
-            <div class="skill-row"><span>TouchDesigner / three.js</span><em>Realtime</em></div>
-            <div class="skill-row"><span>Projection Mapping</span><em>Spatial</em></div>
-            <div class="skill-row"><span>Graphic / Web</span><em>Design</em></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div><div class="foot-logo display" data-bind="logo">YUMA</div><p style="opacity:.7;font-size:.9em">Media Art / Perspective / Illusion</p></div>
-      <div><h4>Site</h4><a href="#blog">Blog</a><a href="#news">News</a><a href="#works">Works</a><a href="#about">About</a></div>
-      <div><h4>Connect</h4><a href="https://github.com/yumagarments">GitHub</a><a href="#">X</a><a href="#">RSS</a></div>
-    </div>
-    <div class="foot-bottom"><span>© 2026 YUMA</span><span>BUILT WITH HUGO</span></div>
-  </div>
-</footer>
-
-<article id="article" class="raw-page"></article>
-
-<!-- ===== 調整パネル ===== -->
 <button id="panel-toggle">🎨 デザイン調整</button>
 <aside id="panel">
-  <header><b>デザイン調整</b><button class="b" id="panel-close">閉じる</button></header>
+  <header><b>デザイン調整</b><button class="bt" id="panel-close">閉じる</button></header>
   <div class="scroll" id="panel-body"></div>
 </aside>
 <div id="toast"></div>
@@ -354,298 +187,328 @@ body.reading #article { display: block; }
 <script>
 /* ---------- サンプルコンテンツ ---------- */
 const POSTS = [
-  { date: "2026.10.25", tag: "Illusion",    title: "カフェウォール錯視をシェーダーで再現する", text: "平行な線が傾いて見える仕組みを GLSL で分解する。" },
-  { date: "2026.10.18", tag: "Perspective", title: "アナモルフォーシスの作図を自動化した", text: "1 点から見たときだけ形が揃う絵を three.js で計算する。" },
-  { date: "2026.10.10", tag: "Illusion",    title: "カニッツァの三角形と「見えない輪郭」", text: "存在しない線を脳が描くとき、何が起きているのか。" },
-  { date: "2026.10.02", tag: "Tech",        title: "TouchDesigner で消失点をリアルタイムに動かす", text: "鑑賞者の位置に追従する遠近法のプロトタイプ。" },
-  { date: "2026.09.24", tag: "Perspective", title: "エイムズの部屋を 1/10 スケールで作った", text: "床と壁の歪ませ方、実寸の図面を公開。" },
-  { date: "2026.09.15", tag: "Exhibition",  title: "展示レポート：錯視とメディアアートの 10 年", text: "会場で見た作品と、自分の制作への気づき。" },
+  { date: "2026.10.25", tag: "Illusion",    title: "カフェウォール錯視をシェーダーで再現する", text: "平行な線が傾いて見える仕組みを GLSL で分解する。", art: 0 },
+  { date: "2026.10.18", tag: "Perspective", title: "アナモルフォーシスの作図を自動化した", text: "1 点から見たときだけ形が揃う絵を three.js で計算する。", art: 1 },
+  { date: "2026.10.10", tag: "Illusion",    title: "カニッツァの三角形と「見えない輪郭」", text: "存在しない線を脳が描くとき、何が起きているのか。", art: 3 },
+  { date: "2026.10.02", tag: "Tech",        title: "TouchDesigner で消失点をリアルタイムに動かす", text: "鑑賞者の位置に追従する遠近法のプロトタイプ。", art: 2 },
+  { date: "2026.09.24", tag: "Perspective", title: "エイムズの部屋を 1/10 スケールで作った", text: "床と壁の歪ませ方、実寸の図面を公開。", art: 9 },
+  { date: "2026.09.15", tag: "Exhibition",  title: "展示レポート：錯視とメディアアートの 10 年", text: "会場で見た作品と、自分の制作への気づき。", art: 4 },
+  { date: "2026.09.03", tag: "Illusion",    title: "ヘルマン格子の灰色の点はどこから来るか", text: "交差点に現れる「ない点」を観察する。", art: 8 },
+  { date: "2026.08.27", tag: "Tech",        title: "錯視図形を SVG で生成するライブラリを作った", text: "このサイトの画像もすべてコードで描いています。", art: 5 },
 ];
-const ART_OF = [1, 0, 3, 2, 5, 4]; // 記事ごとの錯視アート
 const NEWS = [
-  { date: "2026.10.25", title: "ポートフォリオサイトを公開しました", text: "作品・制作ノート・お知らせをまとめていきます。" },
-  { date: "2026.11.08", title: "トーク登壇「遠近法をハックする」", text: "錯視とインタラクションについて話します。" },
-  { date: "2026.11.20", title: "新作インスタレーション展示予定", text: "鑑賞位置で形が変わるアナモルフィック作品です。" },
+  { date: "2026.10.25", tag: "Info",       title: "ポートフォリオサイトを公開しました" },
+  { date: "2026.11.08", tag: "Talk",       title: "トーク登壇「遠近法をハックする」" },
+  { date: "2026.11.20", tag: "Exhibition", title: "新作インスタレーション展示予定" },
 ];
 const WORKS = [
-  { num: "01", title: "Vanishing Room",   text: "Installation / Anamorphosis", color: "a1" },
-  { num: "02", title: "Impossible Blocks", text: "Generative / Web",           color: "a2" },
-  { num: "03", title: "Phantom Edge",      text: "Projection Mapping",         color: "a3" },
+  { no: "W01", title: "Vanishing Room",    text: "Installation / Anamorphosis, 2026", art: 2 },
+  { no: "W02", title: "Impossible Blocks", text: "Generative / Web, 2026",            art: 6 },
+  { no: "W03", title: "Phantom Edge",      text: "Projection Mapping, 2025",          art: 3 },
+  { no: "W04", title: "Hermann Field",     text: "Print / Silkscreen, 2025",          art: 8 },
 ];
 
-/* ---------- 幾何学アート（画像の代わり。色は CSS 変数に追従） ---------- */
+/* ---------- 錯視アート（白黒＋アクセント1色。色は CSS 変数に追従） ---------- */
 const F = c => `style="fill:var(--${c})"`;
-function star(cx, cy, r1, r2, n) {
-  let p = [];
-  for (let i = 0; i < n * 2; i++) {
-    const r = i % 2 ? r2 : r1, a = Math.PI * i / n - Math.PI / 2;
-    p.push((cx + r * Math.cos(a)).toFixed(1) + "," + (cy + r * Math.sin(a)).toFixed(1));
-  }
-  return p.join(" ");
-}
 const S = (c, w = 4) => `style="fill:none;stroke:var(--${c});stroke-width:${w}"`;
-function cubes(s, cols) {
-  const w = s * 0.866; let out = "";
-  for (let r = -1; r < 400 / (1.5 * s) + 1; r++) for (let c = -1; c < cols; c++) {
-    const x = c * 2 * w + (r % 2 ? w : 0), y = r * 1.5 * s;
-    out += `<polygon points="${x},${y - s} ${x + w},${y - s / 2} ${x},${y} ${x - w},${y - s / 2}" ${F("a4")}/>`
-         + `<polygon points="${x - w},${y - s / 2} ${x},${y} ${x},${y + s} ${x - w},${y + s / 2}" ${F("a1")}/>`
-         + `<polygon points="${x},${y} ${x + w},${y - s / 2} ${x + w},${y + s / 2} ${x},${y + s}" ${F("a2")}/>`;
-  }
-  return out;
-}
-function art(i, bg = "dark") {
+const R = (n, f) => Array.from({ length: n }, (_, k) => f(k)).join("");
+function art(i) {
   const v = [
-    // 透視の床（消失点に収束するグリッド）
-    () => `<rect width="400" height="400" ${F("dark")}/><circle cx="200" cy="150" r="70" ${F("a1")}/><rect y="170" width="400" height="230" ${F("dark")}/>`
-        + Array.from({ length: 17 }, (_, k) => `<line x1="200" y1="170" x2="${-600 + k * 75}" y2="400" ${S("a4", 2)}/>`).join("")
-        + Array.from({ length: 9 }, (_, k) => { const y = 170 + 230 * Math.pow(k / 8, 2); return `<line x1="0" y1="${y}" x2="400" y2="${y}" ${S("a4", 2)}/>`; }).join(""),
-    // カフェウォール錯視（平行線が傾いて見える）
-    () => `<rect width="400" height="400" ${F("bg")}/>` + Array.from({ length: 8 }, (_, r) => {
-        const off = [0, 14, 28, 14][r % 4];
-        return Array.from({ length: 6 }, (_, c) => `<rect x="${c * 80 - off}" y="${r * 50}" width="40" height="50" ${F("ink")}/>`).join("")
-             + `<line x1="0" y1="${r * 50}" x2="400" y2="${r * 50}" ${S("muted", 3)}/>`;
-      }).join(""),
-    // 消失点トンネル
-    () => `<rect width="400" height="400" ${F("a2")}/>` + Array.from({ length: 14 }, (_, k) => {
-        const t = Math.pow(0.8, k), vx = 250, vy = 170;
-        return `<rect x="${vx - vx * t}" y="${vy - vy * t}" width="${400 * t}" height="${400 * t}" ${F(k % 2 ? "a2" : "dark")}/>`;
-      }).join("") + [[0,0],[400,0],[0,400],[400,400]].map(([x, y]) => `<line x1="${x}" y1="${y}" x2="250" y2="170" ${S("a4", 2)}/>`).join(""),
-    // カニッツァの三角形（存在しない輪郭）
-    () => `<rect width="400" height="400" ${F("a3")}/><polygon points="200,345 85,150 315,150" ${S("bg", 5)}/>`
-        + [[200,70],[70,300],[330,300]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="52" ${F("dark")}/>`).join("")
-        + `<polygon points="200,70 70,300 330,300" ${F("a3")}/>`,
-    // 同心円（オプアート）
-    () => `<rect width="400" height="400" ${F("bg")}/>` + Array.from({ length: 16 }, (_, k) => `<circle cx="${200 + k * 4}" cy="${200 - k * 2}" r="${300 - k * 18}" ${F(k % 2 ? "bg" : "ink")}/>`).join("") + `<circle cx="264" cy="168" r="18" ${F("a1")}/>`,
-    // ミュラー・リヤー錯視（同じ長さに見えない）
-    () => `<rect width="400" height="400" ${F("a4")}/>`
-        + `<line x1="110" y1="140" x2="290" y2="140" ${S("dark", 8)}/><polyline points="140,100 110,140 140,180" ${S("dark", 8)}/><polyline points="260,100 290,140 260,180" ${S("dark", 8)}/>`
-        + `<line x1="110" y1="270" x2="290" y2="270" ${S("dark", 8)}/><polyline points="80,230 110,270 80,310" ${S("a1", 8)}/><polyline points="320,230 290,270 320,310" ${S("a1", 8)}/>`,
-    // タンブリング・ブロック（凹凸が反転して見える）
-    () => cubes(46, 7),
+    // 0 カフェウォール錯視
+    () => `<rect width="400" height="400" ${F("bg")}/>` + R(8, r => R(6, c => `<rect x="${c * 80 - [0, 14, 28, 14][r % 4]}" y="${r * 50}" width="40" height="50" ${F("ink")}/>`) + `<line x1="0" y1="${r * 50}" x2="400" y2="${r * 50}" ${S("muted", 3)}/>`),
+    // 1 透視の床
+    () => `<rect width="400" height="400" ${F("bg")}/><circle cx="200" cy="140" r="56" ${F("accent")}/><rect y="160" width="400" height="240" ${F("bg")}/>`
+        + R(17, k => `<line x1="200" y1="160" x2="${-600 + k * 75}" y2="400" ${S("ink", 2)}/>`)
+        + R(9, k => { const y = 160 + 240 * Math.pow(k / 8, 2); return `<line x1="0" y1="${y}" x2="400" y2="${y}" ${S("ink", 2)}/>`; }),
+    // 2 消失点トンネル
+    () => R(14, k => { const t = Math.pow(0.8, k); return `<rect x="${250 - 250 * t}" y="${170 - 170 * t}" width="${400 * t}" height="${400 * t}" ${F(k % 2 ? "bg" : "ink")}/>`; })
+        + [[0, 0], [400, 0], [0, 400], [400, 400]].map(([x, y]) => `<line x1="${x}" y1="${y}" x2="250" y2="170" ${S("accent", 2)}/>`).join(""),
+    // 3 カニッツァの三角形
+    () => `<rect width="400" height="400" ${F("bg")}/><polygon points="200,345 85,150 315,150" ${S("ink", 5)}/>`
+        + [[200, 70], [70, 300], [330, 300]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="52" ${F("ink")}/>`).join("")
+        + `<polygon points="200,70 70,300 330,300" ${F("bg")}/>`,
+    // 4 同心円
+    () => `<rect width="400" height="400" ${F("bg")}/>` + R(16, k => `<circle cx="${200 + k * 4}" cy="${200 - k * 2}" r="${300 - k * 18}" ${F(k % 2 ? "bg" : "ink")}/>`) + `<circle cx="264" cy="168" r="18" ${F("accent")}/>`,
+    // 5 ミュラー・リヤー錯視
+    () => `<rect width="400" height="400" ${F("bg")}/>`
+        + `<line x1="110" y1="140" x2="290" y2="140" ${S("ink", 8)}/><polyline points="140,100 110,140 140,180" ${S("ink", 8)}/><polyline points="260,100 290,140 260,180" ${S("ink", 8)}/>`
+        + `<line x1="110" y1="270" x2="290" y2="270" ${S("ink", 8)}/><polyline points="80,230 110,270 80,310" ${S("accent", 8)}/><polyline points="320,230 290,270 320,310" ${S("accent", 8)}/>`,
+    // 6 タンブリング・ブロック
+    () => { const s = 46, w = s * 0.866; let o = `<rect width="400" height="400" ${F("muted")}/>`;
+        for (let r = -1; r < 7; r++) for (let c = -1; c < 7; c++) { const x = c * 2 * w + (r % 2 ? w : 0), y = r * 1.5 * s;
+          o += `<polygon points="${x},${y - s} ${x + w},${y - s / 2} ${x},${y} ${x - w},${y - s / 2}" ${F("bg")}/><polygon points="${x - w},${y - s / 2} ${x},${y} ${x},${y + s} ${x - w},${y + s / 2}" ${F("ink")}/>`; }
+        return o; },
+    // 7 グリッド構成
+    () => `<rect width="400" height="400" ${F("bg")}/><rect x="0" y="200" width="100" height="200" ${F("accent")}/>` + R(5, k => `<line x1="${k * 100}" y1="0" x2="${k * 100}" y2="400" ${S("ink", 2)}/><line x1="0" y1="${k * 100}" x2="400" y2="${k * 100}" ${S("ink", 2)}/>`),
+    // 8 ヘルマン格子（交差点に灰色の点が見える）
+    () => `<rect width="400" height="400" ${F("bg")}/>` + R(25, k => `<rect x="${12 + (k % 5) * 78}" y="${12 + Math.floor(k / 5) * 78}" width="64" height="64" ${F("ink")}/>`),
+    // 9 エビングハウス錯視
+    () => `<rect width="400" height="400" ${F("bg")}/><circle cx="110" cy="200" r="22" ${F("accent")}/>` + R(6, k => `<circle cx="${110 + 80 * Math.cos(k * Math.PI / 3)}" cy="${200 + 80 * Math.sin(k * Math.PI / 3)}" r="40" ${F("ink")}/>`)
+        + `<circle cx="300" cy="200" r="22" ${F("accent")}/>` + R(8, k => `<circle cx="${300 + 40 * Math.cos(k * Math.PI / 4)}" cy="${200 + 40 * Math.sin(k * Math.PI / 4)}" r="9" ${F("ink")}/>`),
   ];
   return `<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">${v[i % v.length]()}</svg>`;
 }
 
 /* ---------- パラメータ ---------- */
+const BASE = {
+  type: { display: "Helvetica Neue", weight: 700, body: "Helvetica Neue", mono: "IBM Plex Mono", monoUpper: true, ds: 1, tracking: -0.055, leading: 0.84, upper: false, bodySize: 13, bodyTracking: -0.01 },
+  grid: { cols: 12, gutter: 0, margin: 40, maxw: 1600, section: 120, lines: "front", lineStyle: "dashed", lineOpacity: 0.3, lineWidth: 1, rows: true, tile: 3, work: 6 },
+};
 const PRESETS = {
-  "Retro Poster": {
-    colors: { bg: "#efe6d2", ink: "#1a1a1a", muted: "#6b6457", line: "#1a1a1a", dark: "#161616", a1: "#e8452c", a2: "#2c4fa3", a3: "#3a8a4a", a4: "#f2a531" },
-    type: { display: "Helvetica Neue", body: "Helvetica Neue", ds: 1, tracking: -0.055, leading: 0.84, bodyTracking: -0.01, upper: false, bodySize: 15 },
-    layout: { maxw: 1200, cols: 3, gap: 0, bw: 1, radius: 0, pad: 24, section: 96, ratio: "4 / 3", heroAlign: "center" },
-  },
-  "Editorial Mono": {
-    colors: { bg: "#f7f6f2", ink: "#111111", muted: "#77736b", line: "#bdb8ad", dark: "#111111", a1: "#ff5a1f", a2: "#1d1d1d", a3: "#3b3b3b", a4: "#e9e4d8" },
-    type: { display: "Helvetica Neue", body: "Helvetica Neue", ds: 1, tracking: -0.055, leading: 0.84, bodyTracking: -0.01, upper: false, bodySize: 14 },
-    layout: { maxw: 1160, cols: 3, gap: 0, bw: 1, radius: 0, pad: 22, section: 110, ratio: "4 / 3", heroAlign: "center" },
-  },
-  "Pop Bold": {
-    colors: { bg: "#fff7e8", ink: "#141414", muted: "#5d5a55", line: "#141414", dark: "#141414", a1: "#ff3d7f", a2: "#3b5bff", a3: "#00b37e", a4: "#ffd23f" },
-    type: { display: "Helvetica Neue", body: "Helvetica Neue", ds: 1, tracking: -0.055, leading: 0.84, bodyTracking: -0.01, upper: false, bodySize: 15 },
-    layout: { maxw: 1240, cols: 3, gap: 16, bw: 2, radius: 18, pad: 22, section: 88, ratio: "1 / 1", heroAlign: "left" },
-  },
-  "Night": {
-    colors: { bg: "#121212", ink: "#f2efe8", muted: "#9a958b", line: "#3a3a3a", dark: "#000000", a1: "#ff6a3d", a2: "#2b3fbf", a3: "#1f8a5b", a4: "#f4c542" },
-    type: { display: "Helvetica Neue", body: "Helvetica Neue", ds: 1, tracking: -0.055, leading: 0.84, bodyTracking: -0.01, upper: false, bodySize: 15 },
-    layout: { maxw: 1200, cols: 3, gap: 0, bw: 1, radius: 0, pad: 24, section: 100, ratio: "3 / 2", heroAlign: "center" },
-  },
+  "Mono Dashed": { colors: { bg: "#f4f4f1", ink: "#000000", muted: "#7a7a7a", line: "#000000", accent: "#000000" } },
+  "Swiss White": { colors: { bg: "#ffffff", ink: "#000000", muted: "#7a7a7a", line: "#000000", accent: "#000000" }, grid: { lineStyle: "solid", lineOpacity: 0.12, rows: false } },
+  "Brass":       { colors: { bg: "#f2f1ec", ink: "#111111", muted: "#6f6d66", line: "#e4572e", accent: "#111111" }, grid: { lineOpacity: 0.55 }, type: { mono: "VT323" } },
+  "Blue Grid":   { colors: { bg: "#ebe9e3", ink: "#111111", muted: "#7d7a72", line: "#1f3fff", accent: "#1f3fff" }, grid: { lineStyle: "solid", lineOpacity: 0.5 } },
+  "Inverse":     { colors: { bg: "#000000", ink: "#ffffff", muted: "#8a8a8a", line: "#ffffff", accent: "#ffffff" }, grid: { lineOpacity: 0.22 } },
 };
 const CONTENT_DEFAULT = {
-  logo: "YUMA",
-  heroTitle: "Seeing\nIs Not\nBelieving",
-  heroSub: "パースペクティブを軸に、錯視を扱うメディアアーティスト / デザイナー Yuma のポートフォリオ。作品・制作ノート・お知らせ。",
-  marquee: "New work: Vanishing Room — Talk 11.08「遠近法をハックする」 — Perspective / Illusion / Media Art",
-  showFloor: true,
-  blogStyle: "2011",
-  showMarquee: true, showNews: true, showWorks: true, showAbout: true,
+  name: "Yuma",
+  role: "Media Artist / Designer",
+  headline: "Seeing is\nnot believing.",
+  lead: "パースペクティブを軸に、錯視を扱うメディアアーティスト / デザイナー。「見えているもの」と「そこにあるもの」のズレをつくっています。",
+  showDeco: true, showNews: true, showWorks: true, showAbout: true, showHeroArt: true,
 };
-const DISPLAY_FONTS = { "Helvetica Neue": 700, "Inter Tight": 800, "Inter": 700, "Archivo Black": 400, "Anton": 400, "Bebas Neue": 400, "DM Serif Display": 400, "Dela Gothic One": 400, "Syne": 800, "Unbounded": 800, "Space Grotesk": 700, "Zen Kaku Gothic New": 900 };
-const BODY_FONTS = ["Helvetica Neue", "Inter", "Zen Kaku Gothic New", "Noto Sans JP", "IBM Plex Sans JP", "Space Grotesk"];
-const STORE = "yuma-design-params-v2", SLOTS = "yuma-design-slots-v1";
+const FONTS = { "Helvetica Neue": [500, 700], "Inter Tight": [500, 600, 700, 800, 900], "Inter": [500, 600, 700, 800], "Archivo": [500, 700, 800, 900], "Arial": [400, 700], "Space Grotesk": [500, 700] };
+const MONO = ["IBM Plex Mono", "Space Mono", "JetBrains Mono", "VT323", "DotGothic16", "Helvetica Neue"];
+const STORE = "yuma-design-params-v4", SLOTS = "yuma-design-slots-v4";
 const clone = o => JSON.parse(JSON.stringify(o));
-const EXTRA = { type: { depth: 0, leading: 0.84, bodyTracking: -0.01 }, layout: { tilt: 10 } };
-const fresh = () => {
-  const p = clone(PRESETS["Retro Poster"]);
-  return { preset: "Retro Poster", colors: p.colors, type: { ...EXTRA.type, ...p.type }, layout: { ...EXTRA.layout, ...p.layout }, content: clone(CONTENT_DEFAULT) };
-};
+function build(presetName, extra = {}) {
+  const p = PRESETS[presetName] || {};
+  return {
+    preset: presetName,
+    colors: { ...PRESETS["Mono Dashed"].colors, ...p.colors, ...extra.colors },
+    type: { ...BASE.type, ...p.type, ...extra.type },
+    grid: { ...BASE.grid, ...p.grid, ...extra.grid },
+    content: { ...CONTENT_DEFAULT, ...extra.content },
+  };
+}
 const store = {
   get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
+let P = (() => { const s = store.get(STORE); return s ? build(s.preset, s) : build("Mono Dashed"); })();
 
-let P = (() => {
-  const s = store.get(STORE), f = fresh();
-  if (!s) return f;
-  return { preset: s.preset || f.preset, colors: { ...f.colors, ...s.colors }, type: { ...f.type, ...s.type }, layout: { ...f.layout, ...s.layout }, content: { ...f.content, ...s.content } };
-})();
-
-/* ---------- 反映 ---------- */
+/* ---------- 描画 ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+// 12 列基準の位置を、現在の列数に変換して配置する
+function c(start, span, inner, cls = "") {
+  const n = Number(P.grid.cols), s = Math.min(n, Math.round((start - 1) * n / 12) + 1), w = Math.max(1, Math.min(n - s + 1, Math.round(span * n / 12)));
+  return `<div class="${cls}" style="grid-column:${s} / span ${w}">${inner}</div>`;
+}
+const bars = () => `<div class="bars">${[3, 1, 6, 2, 1, 4, 1, 2, 7, 1, 3].map(w => `<i style="width:${w}px"></i>`).join("")}</div>`;
 let activeTag = "All";
 
-function apply() {
-  const r = document.documentElement.style, c = P.colors, t = P.type, l = P.layout;
-  for (const k in c) r.setProperty("--" + k, c[k]);
-  r.setProperty("--font-display", `"${t.display}", "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif`);
-  r.setProperty("--display-weight", DISPLAY_FONTS[t.display] ?? 700);
-  r.setProperty("--font-body", `"${t.body}", "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif`);
-  r.setProperty("--leading", t.leading);
-  r.setProperty("--body-tracking", t.bodyTracking + "em");
-  r.setProperty("--ds", t.ds);
-  r.setProperty("--tracking", t.tracking + "em");
-  r.setProperty("--display-case", t.upper ? "uppercase" : "none");
-  r.setProperty("--depth-shadow", t.depth > 0 ? Array.from({ length: t.depth }, (_, i) => `${i + 1}px ${i + 1}px 0 var(--a1)`).join(",") : "none");
-  r.setProperty("--body-size", t.bodySize + "px");
-  r.setProperty("--maxw", l.maxw + "px");
-  r.setProperty("--cols", l.cols);
-  r.setProperty("--cols-md", Math.min(l.cols, 2));
-  r.setProperty("--gap", l.gap + "px");
-  r.setProperty("--bw", l.bw + "px");
-  r.setProperty("--radius", l.radius + "px");
-  r.setProperty("--pad", l.pad + "px");
-  r.setProperty("--section", l.section + "px");
-  r.setProperty("--ratio", "1 / 1"); // 記事画像はすべて正方形
-  $("#grid").classList.toggle("lined", Number(l.gap) === 0);
-  $("#hero").classList.toggle("center", l.heroAlign === "center");
+function header(cur) {
+  const ct = P.content, nav = [["#index", "Index"], ["#news", "News"], ["#works", "Works"], ["#about", "About"]];
+  return `<header class="top"><div class="frame g s">
+    ${c(1, 3, `<a class="b" href="#">${esc(ct.name)} ®</a><br><span class="m">Visual / Perception Unit</span>`)}
+    ${c(4, 3, `${esc(ct.role)}<br><span class="m">Perspective / Optical Illusion</span>`)}
+    ${c(7, 3, `<nav>${nav.map(([h, t]) => `<a href="${h}"${cur === h ? ' class="on"' : ""}>${t}</a>`).join("")}</nav>`)}
+    ${c(10, 3, `Tokyo, JP — 35.68°N<br><span class="m">Est. 2026</span>`, "r")}
+  </div></header>
+  ${ct.showDeco && P.grid.margin >= 32 ? `<div class="vtext s"><span>${esc(ct.name)} / Visual Perception Division</span><i></i><span>Fig. 2026 — Rev. 01</span></div>` : ""}`;
+}
+function tile(p, i) {
+  return `<a class="tile" href="#post-${i}"><div class="sq">${art(p.art)}</div>
+    <div class="cap s"><span class="b">${String(i + 1).padStart(2, "0")}</span><span class="m">${p.date}</span><span class="m">${p.tag}</span><span class="t">${esc(p.title)}</span></div></a>`;
+}
+function home() {
+  const ct = P.content, tags = ["All", ...new Set(POSTS.map(p => p.tag))];
+  const posts = POSTS.map((p, i) => ({ p, i })).filter(({ p }) => activeTag === "All" || p.tag === activeTag);
+  return `${header("")}
+  <main class="frame">
+    <section class="hero">
+      <h1 class="d h-xl">${esc(ct.headline).replace(/\n/g, "<br>")}</h1>
+      <div class="g hero-row">
+        ${c(1, 3, ct.showDeco
+          ? `<div class="crop"><div class="d">${esc(ct.name)}<br>Studio</div></div><div class="marks"><div class="reg">R</div>${bars()}</div>`
+          : `<p class="s">(Index of works, notes and news)</p>`)}
+        ${ct.showHeroArt ? c(4, 3, `<div class="sq">${art(7)}</div><p class="s m" style="margin-top:6px">Fig. 00 — Grid / Perception</p>`) : ""}
+        ${c(7, 6, `<p class="lead">${esc(ct.lead)}</p>
+          ${ct.showDeco ? `<div class="status s" style="margin-top:20px">
+            <div><span>Status:</span><span>Active &gt; <span class="hl">[Open]</span> for commissions</span></div>
+            <div><span>Discipline:</span><span>Media Art / Installation / Graphic</span></div>
+            <div><span>Focus:</span><span>Perspective — Optical Illusion</span></div>
+            <div><span>Location:</span><span>Tokyo, JP ------ Worldwide</span></div></div>` : ""}`)}
+      </div>
+    </section>
 
-  const ct = P.content;
-  document.querySelectorAll('[data-bind="logo"]').forEach(e => e.textContent = ct.logo);
-  $('[data-bind="heroTitle"]').innerHTML = esc(ct.heroTitle).replace(/\n/g, "<br>");
-  $('[data-bind="heroSub"]').textContent = ct.heroSub;
-  const items = ct.marquee.split(/\s*—\s*/).filter(Boolean).map(s => `<span>${esc(s)}</span>`).join("");
-  $("#marquee-track").innerHTML = items.repeat(4) + items.repeat(4);
-  $("#marquee").classList.toggle("is-hidden", !ct.showMarquee);
-  $("#floor").classList.toggle("is-hidden", !ct.showFloor);
-  $("#news").classList.toggle("is-hidden", !ct.showNews);
-  $("#works").classList.toggle("is-hidden", !ct.showWorks);
-  $("#about").classList.toggle("is-hidden", !ct.showAbout);
-  const raw = ct.blogStyle === "2011";
-  $("#rawblog").classList.toggle("is-hidden", !raw);
-  $("#grid").classList.toggle("is-hidden", raw);
-  $("#pills").classList.toggle("is-hidden", raw);
+    <section class="sec" id="index">
+      <div class="g sec-h s">
+        ${c(1, 3, `<span class="b">01</span> — Index`)}
+        ${c(4, 6, `<div class="filters">${tags.map(t => `<button data-tag="${t}"${t === activeTag ? ' class="on"' : ""}>${t}</button>`).join("")}</div>`)}
+        ${c(10, 3, `${posts.length} entries`, "r m")}
+        ${c(1, 12, `<h2 class="d sec-title">Notes</h2>`)}
+      </div>
+      <div class="tiles">${posts.map(({ p, i }) => tile(p, i)).join("")}</div>
+    </section>
+
+    ${ct.showNews ? `<section class="sec" id="news">
+      <div class="g sec-h s">${c(1, 3, `<span class="b">02</span> — News`)}${c(4, 6, `Announcements`, "m")}${c(10, 3, `RSS ↗`, "r")}${c(1, 12, `<h2 class="d sec-title">News</h2>`)}</div>
+      ${NEWS.map(n => `<a class="g row" href="#">${c(1, 3, n.date, "s")}${c(4, 6, `<span class="t">${esc(n.title)}</span>`)}${c(10, 2, n.tag, "s m")}${c(12, 1, "→", "r")}</a>`).join("")}
+    </section>` : ""}
+
+    ${ct.showWorks ? `<section class="sec" id="works">
+      <div class="g sec-h s">${c(1, 3, `<span class="b">03</span> — Works`)}${c(4, 6, `Selected works`, "m")}${c(10, 3, `${WORKS.length} projects`, "r m")}${c(1, 12, `<h2 class="d sec-title">Works</h2>`)}</div>
+      <div class="tiles works">${WORKS.map(w => `<a class="tile" href="#"><div class="sq">${art(w.art)}</div>
+        <div class="cap s"><span class="b">${w.no}</span><span class="m">${w.text}</span><span></span><span class="t">${w.title}</span></div></a>`).join("")}</div>
+    </section>` : ""}
+
+    ${ct.showAbout ? `<section class="sec" id="about">
+      <div class="g sec-h s">${c(1, 3, `<span class="b">04</span> — About`)}${c(4, 6, `Profile`, "m")}${c(1, 12, `<h2 class="d sec-title">About</h2>`)}</div>
+      <div class="g" style="row-gap:32px">
+        ${c(1, 3, `<p class="s b">${esc(ct.name)}</p><p class="s m">${esc(ct.role)}<br>Based in Tokyo</p>`)}
+        ${c(4, 6, `<p class="about-txt">${esc(ct.lead)}</p>`)}
+        ${c(10, 3, `<div class="list s">
+          <div><span>Anamorphosis</span><span class="m">Installation</span></div>
+          <div><span>TouchDesigner / three.js</span><span class="m">Realtime</span></div>
+          <div><span>Projection Mapping</span><span class="m">Spatial</span></div>
+          <div><span>Graphic / Web</span><span class="m">Design</span></div></div>`)}
+      </div>
+    </section>` : ""}
+  </main>
+  ${footer()}`;
+}
+function footer() {
+  return `<footer class="frame foot">
+    <div class="g s">
+      ${c(1, 3, `© 2026 ${esc(P.content.name)}<br><span class="m">All rights reserved</span>`)}
+      ${c(4, 3, `<a class="u" href="https://github.com/yumagarments">GitHub</a>`)}
+      ${c(7, 3, `<a class="u" href="#">Instagram</a> / <a class="u" href="#">X</a>`)}
+      ${c(10, 3, `<a href="#">Back to top ↑</a>`, "r")}
+    </div>
+    <div class="d wordmark">${esc(P.content.name)}</div>
+  </footer>`;
+}
+function article(i) {
+  const p = POSTS[i], prev = POSTS[i + 1], next = POSTS[i - 1];
+  return `${header("#index")}
+  <main class="frame">
+    <div class="g art-head">
+      ${c(1, 12, `<p class="s"><a class="u" href="#index">← Index</a></p>`)}
+      ${c(1, 3, `<div class="meta s">
+        <div><span>No.</span><span class="b">${String(i + 1).padStart(2, "0")}</span></div>
+        <div><span>Date</span><span>${p.date}</span></div>
+        <div><span>Category</span><span>${p.tag}</span></div>
+        <div><span>Read</span><span>4 min</span></div></div>`)}
+      ${c(4, 9, `<h1 class="d art-title">${esc(p.title)}</h1>`)}
+    </div>
+    <div class="g art-body">
+      ${c(1, 6, `<div class="sq" style="outline:var(--lw) solid var(--ink)">${art(p.art)}</div><p class="s m" style="margin-top:8px">Fig. ${String(i + 1).padStart(2, "0")} — ${p.tag}</p>`)}
+      ${c(7, 5, `<div class="prose">
+        <p><b>${esc(p.text)}</b></p>
+        <p>ここに本文が入ります。制作の経緯、参考にした論文や作品、うまくいかなかったことなどを、ノートのように書いていきます。</p>
+        <h2>01 — Process</h2>
+        <p>まず手で作図して、次にコードに落とし込みました。消失点の位置を変えると見え方がどう変わるかを、何度も試しています。</p>
+        <pre>// 消失点に向かうグリッド
+for (let k = 0; k &lt; 17; k++)
+  line(200, 160, -600 + k * 75, 400);</pre>
+        <h2>02 — Notes</h2>
+        <ul><li>錯視は「間違い」ではなく、脳の推測のクセ</li><li>見る位置が 1 つに決まると、遠近法は強くなる</li></ul>
+      </div>`)}
+    </div>
+    <div class="g pager">
+      ${c(1, 6, prev ? `<a href="#post-${i + 1}"><span class="s m">← Previous</span><div class="t">${esc(prev.title)}</div></a>` : "")}
+      ${c(7, 6, next ? `<a href="#post-${i - 1}"><span class="s m">Next →</span><div class="t">${esc(next.title)}</div></a>` : "", "r")}
+    </div>
+  </main>
+  ${footer()}`;
+}
+
+function render() {
+  const m = location.hash.match(/^#post-(\d+)$/);
+  $("#app").innerHTML = m && POSTS[m[1]] ? article(Number(m[1])) : home();
+  $("#ov-cols").innerHTML = "<i></i>".repeat(Number(P.grid.cols));
+  sizeCells();
+}
+// 横線の間隔 = 列幅（正方形の升目になる）
+function sizeCells() {
+  const el = $("#ov-cols"), n = Number(P.grid.cols), w = el.getBoundingClientRect().width, g = Number(P.grid.gutter);
+  const shown = matchMedia("(max-width: 720px)").matches ? 4 : n;
+  const cell = (w - g * (shown - 1)) / shown + g;
+  document.documentElement.style.setProperty("--cell", cell + "px");
+  const rows = P.grid.rows ? Math.ceil(document.body.scrollHeight / cell) : 0;
+  $("#ov-rows").innerHTML = "<b></b>".repeat(rows);
+}
+function apply() {
+  const r = document.documentElement.style, k = P.colors, t = P.type, g = P.grid;
+  for (const x in k) r.setProperty("--" + x, k[x]);
+  const stack = n => `"${n}", "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", sans-serif`;
+  r.setProperty("--font-d", stack(t.display));
+  r.setProperty("--font-b", stack(t.body));
+  r.setProperty("--font-m", `"${t.mono}", ui-monospace, Menlo, "Hiragino Sans", monospace`);
+  r.setProperty("--mcase", t.monoUpper ? "uppercase" : "none");
+  r.setProperty("--dw", t.weight);
+  r.setProperty("--ds", t.ds);
+  r.setProperty("--tr", t.tracking + "em");
+  r.setProperty("--ld", t.leading);
+  r.setProperty("--upper", t.upper ? "uppercase" : "none");
+  r.setProperty("--bs", t.bodySize + "px");
+  r.setProperty("--btr", t.bodyTracking + "em");
+  r.setProperty("--cols", g.cols);
+  r.setProperty("--gutter", g.gutter + "px");
+  r.setProperty("--margin", g.margin + "px");
+  r.setProperty("--maxw", g.maxw >= 2400 ? "100vw" : g.maxw + "px");
+  r.setProperty("--section", g.section + "px");
+  r.setProperty("--lo", g.lineOpacity);
+  r.setProperty("--lw", g.lineWidth + "px");
+  r.setProperty("--ls", g.lineStyle);
+  r.setProperty("--tiles", Math.round(12 / g.tile));
+  r.setProperty("--works", Math.round(12 / g.work));
+  $("#overlay").className = "overlay " + g.lines;
+  $("#ov-cols").classList.toggle("gut", Number(g.gutter) > 0);
+  render();
   store.set(STORE, P);
 }
-
-function renderContent() {
-  const tags = ["All", ...new Set(POSTS.map(p => p.tag))];
-  $("#pills").innerHTML = tags.map(t => `<button class="pill${t === activeTag ? " on" : ""}" data-tag="${t}">${t}</button>`).join("");
-  $("#grid").innerHTML = POSTS.map((p, i) => `
-    <a class="card${activeTag !== "All" && p.tag !== activeTag ? " hide" : ""}" href="#post-${i}">
-      <div class="card-top"><span class="muted">${p.date}</span><span class="tag">${p.tag}</span></div>
-      <div class="art">${art(ART_OF[i])}</div>
-      <h3>${p.title}</h3><p>${p.text}</p><span class="more">Read more</span>
-    </a>`).join("");
-  const shown = POSTS.map((p, i) => ({ ...p, i })).filter(p => activeTag === "All" || p.tag === activeTag);
-  const tags2 = [...new Set(POSTS.map(p => p.tag))];
-  $("#rawblog").innerHTML = `
-    <div class="raw-head"><b>Yuma's Blog</b><p>錯視とパースペクティブの制作ノート。たまに日記。</p></div>
-    <div class="raw-main">${shown.map(p => `
-      <div class="raw-post">
-        <a class="thumb" href="#post-${p.i}">${art(ART_OF[p.i])}</a>
-        <h4><a href="#post-${p.i}">${p.title}</a></h4>
-        <div class="raw-meta">${p.date} | カテゴリー: <a href="#blog" data-cat="${p.tag}">${p.tag}</a> | <a href="#post-${p.i}">コメント (${p.i % 3})</a></div>
-        <p>${p.text}</p>
-        <p><a href="#post-${p.i}">続きを読む &raquo;</a></p>
-      </div>`).join("")}
-    </div>
-    <div class="raw-side">
-      <h5>プロフィール</h5><p style="margin:0 0 18px">Yuma<br>メディアアーティスト / デザイナー。遠近法と錯視。</p>
-      <h5>カテゴリー</h5><ul>
-        <li><a href="#blog" data-cat="All"${activeTag === "All" ? ' class="cur"' : ""}>すべて</a> (${POSTS.length})</li>
-        ${tags2.map(t => `<li><a href="#blog" data-cat="${t}"${activeTag === t ? ' class="cur"' : ""}>${t}</a> (${POSTS.filter(p => p.tag === t).length})</li>`).join("")}</ul>
-      <h5>アーカイブ</h5><ul><li><a href="#blog">2026年10月</a> (4)</li><li><a href="#blog">2026年9月</a> (2)</li></ul>
-      <h5>リンク</h5><ul><li><a href="https://github.com/yumagarments">GitHub</a></li><li><a href="#">RSS 2.0</a></li></ul>
-      <p>あなたは <span class="counter">004127</span> 人目の訪問者です</p>
-    </div>
-    <div class="raw-foot">Powered by Hugo | Theme: Default</div>`;
-  $("#news-list").innerHTML = NEWS.map(n => `<div class="news-item"><time>${n.date}</time><div><b>${n.title}</b><span>${n.text}</span></div></div>`).join("");
-  $("#poster").innerHTML = art(6);
-  $("#works-grid").innerHTML = WORKS.map((w, i) => `
-    <a class="work" href="#" style="background:var(--${w.color})">${art([2, 6, 3][i])}
-      <span class="num">${w.num}</span><div><b>${w.title}</b><span>${w.text}</span></div></a>`).join("");
-}
-$("#rawblog").addEventListener("click", e => {
-  const a = e.target.closest("[data-cat]"); if (!a) return;
-  e.preventDefault(); activeTag = a.dataset.cat; renderContent();
-});
-
-/* 記事ページ（#post-N で表示） */
-function renderRoute() {
-  const m = location.hash.match(/^#post-(\d+)$/);
-  const was = document.body.classList.contains("reading");
-  document.body.classList.toggle("reading", !!m);
-  if (!m) { if (was && location.hash) document.querySelector(location.hash)?.scrollIntoView(); return; }
-  const i = Number(m[1]), p = POSTS[i]; if (!p) return;
-  const prev = POSTS[i + 1], next = POSTS[i - 1];
-  $("#article").innerHTML = `
-    <div class="bar"><a href="#blog">Yuma's Blog</a> &nbsp;|&nbsp; <a href="#top">ポートフォリオに戻る</a></div>
-    <div class="body">
-      <div class="crumb"><a href="#top">ホーム</a> &gt; <a href="#blog">${p.tag}</a> &gt; ${p.title}</div>
-      <h1>${p.title}</h1>
-      <div class="raw-meta" style="font-size:11px;color:#888">${p.date} 投稿者: yuma | カテゴリー: ${p.tag}</div>
-      <div class="sq">${art(ART_OF[i])}</div>
-      <p>${p.text}</p>
-      <p>ここに本文が入ります。制作の経緯、参考にした論文や作品、うまくいかなかったことなどを、できるだけそのまま書いていきます。整えすぎず、ノートのように。</p>
-      <h2>やったこと</h2>
-      <p>まず手で作図して、次にコードに落とし込みました。消失点の位置を変えると、見え方がどう変わるかを何度も試しています。</p>
-      <pre>// 例: 消失点に向かうグリッド
-for (let k = 0; k &lt; 17; k++) line(200, 170, -600 + k * 75, 400);</pre>
-      <h2>メモ</h2>
-      <ul><li>錯視は「間違い」ではなく、脳の推測のクセ</li><li>見る位置が 1 つに決まると、遠近法は強くなる</li></ul>
-      <div class="pager">
-        <span>${prev ? `<a href="#post-${i + 1}">&laquo; ${prev.title}</a>` : ""}</span>
-        <span>${next ? `<a href="#post-${i - 1}">${next.title} &raquo;</a>` : ""}</span>
-      </div>
-      <div class="cmt"><b>コメント (${i % 3})</b><p style="color:#888">コメントはまだありません。</p>
-        <p>名前: <input type="text" size="20"></p><textarea></textarea><p><input type="button" value="送信する"></p></div>
-    </div>`;
-  scrollTo(0, 0);
-}
-addEventListener("hashchange", renderRoute);
-
-$("#pills").addEventListener("click", e => {
-  const b = e.target.closest(".pill"); if (!b) return;
-  activeTag = b.dataset.tag; renderContent();
+addEventListener("hashchange", () => { render(); const h = location.hash; if (h.startsWith("#post-") || !h) scrollTo(0, 0); else document.querySelector(h)?.scrollIntoView(); });
+addEventListener("resize", sizeCells);
+document.fonts?.ready.then(sizeCells);
+$("#app").addEventListener("click", e => {
+  const b = e.target.closest("[data-tag]"); if (!b) return;
+  activeTag = b.dataset.tag; render(); document.querySelector("#index").scrollIntoView();
 });
 
 /* ---------- パネル ---------- */
 const CONTROLS = [
   ["カラー", [
-    ["colors.bg", "背景", "color"], ["colors.ink", "文字", "color"], ["colors.muted", "補助文字", "color"],
-    ["colors.line", "線", "color"], ["colors.dark", "暗色帯", "color"],
-    ["colors.a1", "アクセント1", "color"], ["colors.a2", "アクセント2", "color"], ["colors.a3", "アクセント3", "color"], ["colors.a4", "アクセント4", "color"],
+    ["colors.bg", "背景", "color"], ["colors.ink", "文字・罫線", "color"], ["colors.muted", "補助文字", "color"],
+    ["colors.line", "グリッド線", "color"], ["colors.accent", "アクセント", "color"],
   ]],
   ["文字", [
-    ["type.display", "見出しフォント", "select", Object.keys(DISPLAY_FONTS)],
-    ["type.ds", "見出しサイズ", "range", 0.5, 1.6, 0.05, "×"],
-    ["type.tracking", "見出し字間", "range", -0.1, 0.1, 0.005, "em"],
+    ["type.display", "見出しフォント", "select", Object.keys(FONTS)],
+    ["type.weight", "見出しの太さ", "select", [400, 500, 600, 700, 800, 900]],
+    ["type.ds", "見出しサイズ", "range", 0.4, 1.6, 0.02, "×"],
+    ["type.tracking", "見出し字間", "range", -0.12, 0.05, 0.005, "em"],
     ["type.leading", "見出し行間", "range", 0.7, 1.2, 0.01, ""],
-    ["type.upper", "大文字にする", "check"],
-    ["type.depth", "見出しの立体", "range", 0, 16, 1, "px"],
-    ["type.body", "本文フォント", "select", BODY_FONTS],
-    ["type.bodySize", "本文サイズ", "range", 12, 20, 1, "px"],
+    ["type.upper", "見出しを大文字", "check"],
+    ["type.body", "本文フォント", "select", Object.keys(FONTS)],
+    ["type.bodySize", "本文サイズ", "range", 10, 18, 1, "px"],
     ["type.bodyTracking", "本文字間", "range", -0.06, 0.1, 0.005, "em"],
+    ["type.mono", "ラベルフォント", "select", MONO],
+    ["type.monoUpper", "ラベルを大文字", "check"],
   ]],
-  ["レイアウト", [
-    ["layout.maxw", "最大幅", "range", 860, 1600, 20, "px"],
-    ["layout.cols", "列数", "range", 1, 4, 1, ""],
-    ["layout.gap", "カード間隔", "range", 0, 48, 2, "px"],
-    ["layout.bw", "線の太さ", "range", 0, 4, 1, "px"],
-    ["layout.radius", "角丸", "range", 0, 32, 1, "px"],
-    ["layout.pad", "カード余白", "range", 8, 48, 2, "px"],
-    ["layout.section", "セクション間", "range", 40, 180, 4, "px"],
-    ["layout.heroAlign", "タイトル配置", "select", ["center", "left"]],
-    ["layout.tilt", "カードの傾き", "range", 0, 25, 1, "°"],
+  ["グリッド", [
+    ["grid.cols", "列数", "select", [4, 6, 8, 12, 16]],
+    ["grid.gutter", "溝（ガター）", "range", 0, 40, 2, "px"],
+    ["grid.margin", "左右の余白", "range", 0, 120, 4, "px"],
+    ["grid.maxw", "最大幅", "range", 960, 2400, 40, "px"],
+    ["grid.lines", "グリッド線", "select", ["front", "back", "none"]],
+    ["grid.lineStyle", "線の種類", "select", ["dashed", "dotted", "solid"]],
+    ["grid.lineOpacity", "線の濃さ", "range", 0.03, 1, 0.01, ""],
+    ["grid.lineWidth", "線の太さ", "range", 1, 3, 1, "px"],
+    ["grid.rows", "横線（正方形の升目）", "check"],
+    ["grid.tile", "記事タイルの幅", "select", [2, 3, 4, 6]],
+    ["grid.work", "作品タイルの幅", "select", [3, 4, 6, 12]],
+    ["grid.section", "セクション間", "range", 40, 240, 4, "px"],
   ]],
   ["テキスト・表示", [
-    ["content.blogStyle", "ブログの見た目", "select", ["2011", "designed"]],
-    ["content.logo", "ロゴ", "text"],
-    ["content.heroTitle", "大見出し", "textarea"],
-    ["content.heroSub", "紹介文", "textarea"],
-    ["content.marquee", "流れる帯 (— 区切り)", "textarea"],
-    ["content.showFloor", "遠近グリッド床", "check"],
-    ["content.showMarquee", "流れる帯", "check"],
+    ["content.name", "名前", "text"],
+    ["content.role", "肩書き", "text"],
+    ["content.headline", "大見出し", "textarea"],
+    ["content.lead", "紹介文", "textarea"],
+    ["content.showDeco", "装飾（トンボ・縦書き・®）", "check"],
+    ["content.showHeroArt", "トップの図版", "check"],
     ["content.showNews", "News", "check"],
     ["content.showWorks", "Works", "check"],
     ["content.showAbout", "About", "check"],
@@ -653,72 +516,58 @@ const CONTROLS = [
 ];
 const getK = k => k.split(".").reduce((o, x) => o[x], P);
 const setK = (k, v) => { const [a, b] = k.split("."); P[a][b] = v; };
-
-function buildPanel() {
-  const presetHTML = Object.entries(PRESETS).map(([name, p]) => `
-    <button class="preset" data-preset="${name}"><b>${name}</b>
-      <div class="swatches">${["bg","ink","a1","a2","a3","a4"].map(k => `<i style="background:${p.colors[k]}"></i>`).join("")}</div></button>`).join("");
-  const groups = CONTROLS.map(([g, items], gi) => `<details${gi < 2 ? " open" : ""}><summary>${g}</summary>${items.map(ctrl).join("")}</details>`).join("");
-  $("#panel-body").innerHTML = `
-    <div class="presets">${presetHTML}</div>
-    <p class="note">プリセットで土台を選んでから、下で細かく調整してください。変更は自動で保存されます。</p>
-    ${groups}
-    <details open><summary>保存・書き出し</summary>
-      <div class="btns">
-        <button class="b primary" id="copy-json">設定をコピー</button>
-        <button class="b" id="dl-json">JSON をダウンロード</button>
-        <button class="b" id="reset">初期化</button>
-      </div>
-      <p class="note">「設定をコピー」して Claude に貼り付ければ、そのまま本番サイトに反映できます。</p>
-      <textarea id="import-box" placeholder="ここに JSON を貼り付けて「読み込む」"></textarea>
-      <div class="btns"><button class="b" id="import-json">読み込む</button></div>
-      <b style="display:block;margin-top:8px">比較用スロット</b>
-      <div class="btns"><button class="b" id="save-slot">今の設定をスロットに保存</button></div>
-      <div id="slots"></div>
-    </details>`;
-  renderSlots();
-}
 function ctrl([k, label, type, ...o]) {
   const v = getK(k), id = "c-" + k.replace(".", "-");
   let input, out = "";
   if (type === "color") input = `<input type="color" id="${id}" data-k="${k}" value="${v}">`, out = `<output>${v}</output>`;
-  else if (type === "range") input = `<input type="range" id="${id}" data-k="${k}" min="${o[0]}" max="${o[1]}" step="${o[2]}" value="${v}" data-unit="${o[3]}">`, out = `<output>${v}${o[3]}</output>`;
+  else if (type === "range") input = `<input type="range" id="${id}" data-k="${k}" min="${o[0]}" max="${o[1]}" step="${o[2]}" value="${v}" data-unit="${o[3]}">`, out = `<output>${k === "grid.maxw" && v >= 2400 ? "全幅" : v + o[3]}</output>`;
   else if (type === "select") input = `<select id="${id}" data-k="${k}">${o[0].map(x => `<option${x == v ? " selected" : ""}>${x}</option>`).join("")}</select>`;
   else if (type === "check") input = `<input type="checkbox" id="${id}" data-k="${k}"${v ? " checked" : ""}>`;
   else if (type === "text") input = `<input type="text" id="${id}" data-k="${k}" value="${esc(v)}">`;
   else input = `<textarea id="${id}" data-k="${k}">${esc(v)}</textarea>`;
-  return `<div class="row"><label for="${id}">${label}</label>${input}${out}</div>`;
+  return `<div class="row2"><label for="${id}">${label}</label>${input}${out}</div>`;
+}
+function buildPanel() {
+  const presetHTML = Object.keys(PRESETS).map(name => { const p = build(name);
+    return `<button class="preset" data-preset="${name}"><b>${name}</b><div class="swatches">${["bg", "ink", "muted", "line", "accent"].map(x => `<i style="background:${p.colors[x]}"></i>`).join("")}</div></button>`; }).join("");
+  $("#panel-body").innerHTML = `
+    <div class="presets">${presetHTML}</div>
+    <p class="note">プリセットで土台を選び、下で細かく調整。変更は自動保存されます。</p>
+    ${CONTROLS.map(([g, items], gi) => `<details${gi < 3 ? " open" : ""}><summary>${g}</summary>${items.map(ctrl).join("")}</details>`).join("")}
+    <details open><summary>保存・書き出し</summary>
+      <div class="btns"><button class="bt primary" id="copy-json">設定をコピー</button><button class="bt" id="dl-json">JSON をダウンロード</button><button class="bt" id="reset">初期化</button></div>
+      <p class="note">「設定をコピー」して Claude に貼り付ければ、本番サイトに反映できます。</p>
+      <textarea id="import-box" placeholder="ここに JSON を貼り付けて「読み込む」"></textarea>
+      <div class="btns"><button class="bt" id="import-json">読み込む</button></div>
+      <b style="display:block;margin-top:8px">比較用スロット</b>
+      <div class="btns"><button class="bt" id="save-slot">今の設定をスロットに保存</button></div>
+      <div id="slots"></div>
+    </details>`;
+  renderSlots();
 }
 function renderSlots() {
   const slots = store.get(SLOTS) || [];
-  $("#slots").innerHTML = slots.length ? slots.map((s, i) => `
-    <div class="slot"><span>${esc(s.name)}</span>
-      <button class="b" data-load="${i}">読込</button><button class="b" data-del="${i}">削除</button></div>`).join("")
+  $("#slots").innerHTML = slots.length ? slots.map((s, i) => `<div class="slot"><span>${esc(s.name)}</span><button class="bt" data-load="${i}">読込</button><button class="bt" data-del="${i}">削除</button></div>`).join("")
     : `<p class="note">まだありません。気に入った案を保存して見比べられます。</p>`;
 }
 function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 1600); }
-function exportJSON() { return JSON.stringify(P, null, 2); }
-function load(obj) {
-  const f = fresh();
-  P = { preset: obj.preset || "Custom", colors: { ...f.colors, ...obj.colors }, type: { ...f.type, ...obj.type }, layout: { ...f.layout, ...obj.layout }, content: { ...f.content, ...obj.content } };
-  apply(); buildPanel();
-}
+const exportJSON = () => JSON.stringify(P, null, 2);
+function load(obj) { P = build(obj.preset in PRESETS ? obj.preset : "Mono Dashed", obj); P.preset = obj.preset || "Custom"; apply(); buildPanel(); }
 
 $("#panel-body").addEventListener("input", e => {
   const el = e.target, k = el.dataset.k; if (!k) return;
   let v = el.type === "checkbox" ? el.checked : el.value;
-  if (el.type === "range") v = Number(v);
+  if (el.type === "range" || /^(grid\.(cols|tile|work)|type\.weight)$/.test(k)) v = Number(v);
   setK(k, v); P.preset = "Custom";
   const out = el.parentElement.querySelector("output");
-  if (out) out.textContent = v + (el.dataset.unit || "");
+  if (out) out.textContent = k === "grid.maxw" && v >= 2400 ? "全幅" : v + (el.dataset.unit || "");
   apply();
 });
 $("#panel-body").addEventListener("click", async e => {
   const t = e.target.closest("button"); if (!t) return;
   if (t.dataset.preset) {
-    const p = clone(PRESETS[t.dataset.preset]);
-    load({ preset: t.dataset.preset, ...p, type: { ...p.type, depth: P.type.depth }, layout: { ...p.layout, tilt: P.layout.tilt }, content: P.content });
-    toast(t.dataset.preset + " を適用");
+    const p = PRESETS[t.dataset.preset];
+    P = build(t.dataset.preset, { content: P.content, type: { ...P.type, ...p.type } }); apply(); buildPanel(); toast(t.dataset.preset + " を適用");
   } else if (t.id === "copy-json") {
     try { await navigator.clipboard.writeText(exportJSON()); toast("コピーしました"); }
     catch { $("#import-box").value = exportJSON(); toast("下の欄に出力しました（手動でコピー）"); }
@@ -727,7 +576,7 @@ $("#panel-body").addEventListener("click", async e => {
     a.href = URL.createObjectURL(new Blob([exportJSON()], { type: "application/json" }));
     a.download = "design-params.json"; a.click(); toast("ダウンロードしました");
   } else if (t.id === "reset") {
-    if (confirm("初期状態に戻しますか？")) { P = fresh(); apply(); buildPanel(); }
+    if (confirm("初期状態に戻しますか？")) { P = build("Mono Dashed"); apply(); buildPanel(); }
   } else if (t.id === "import-json") {
     try { load(JSON.parse($("#import-box").value)); toast("読み込みました"); } catch { toast("JSON の形式が正しくありません"); }
   } else if (t.id === "save-slot") {
@@ -740,19 +589,10 @@ $("#panel-body").addEventListener("click", async e => {
     const slots = store.get(SLOTS) || []; slots.splice(t.dataset.del, 1); store.set(SLOTS, slots); renderSlots();
   }
 });
-/* 画像をマウス位置に合わせて立体的に傾ける */
-document.addEventListener("pointermove", e => {
-  const card = e.target.closest && e.target.closest(".card");
-  document.querySelectorAll(".card .art").forEach(a => { if (!card || !card.contains(a)) a.style.transform = ""; });
-  if (!card || !P.layout.tilt) return;
-  const a = card.querySelector(".art"), r = a.getBoundingClientRect();
-  const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5, d = P.layout.tilt;
-  a.style.transform = `perspective(700px) rotateY(${x * d * 2}deg) rotateX(${-y * d * 2}deg)`;
-});
 $("#panel-toggle").onclick = () => $("#panel").classList.toggle("open");
 $("#panel-close").onclick = () => $("#panel").classList.remove("open");
 
-renderContent(); apply(); buildPanel(); renderRoute();
+apply(); buildPanel();
 </script>
 </body>
 </html>
