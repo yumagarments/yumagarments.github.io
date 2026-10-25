@@ -3,6 +3,7 @@
 baseURL = "https://yumagarments.github.io/"
 locale = "ja"
 title = "Yuma Garments"
+timeZone = "Asia/Tokyo"   # 日付を日本時間として扱う
 
 [taxonomies]
   tag = "tags"
