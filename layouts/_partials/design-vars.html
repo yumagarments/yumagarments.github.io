@@ -22,7 +22,7 @@
 {{ $vars = $vars | append
   (printf `--font-d:"%s",%s` $t.display $stack)
   (printf `--font-b:"%s",%s` $t.body $stack)
-  (printf `--font-m:"%s",ui-monospace,Menlo,"Hiragino Sans",monospace` $t.mono)
+  (printf `--font-m:"%s",%s` $t.mono $stack)
   (printf "--mcase:%s" (cond $t.monoUpper "uppercase" "none"))
   (printf "--dw:%v" $t.weight)
   (printf "--ts:%vpx" $t.titleSize)

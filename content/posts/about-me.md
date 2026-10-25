@@ -14,7 +14,24 @@ image: "/images/yuma-garments.jpg"
 
 ## 展示・上映歴
 
-- 2026年　MAPP_MTL「MINUTE_MAPP」にて《Crossroom Groove》上映（カナダ・モントリオール）
+- 2026年10月1日　MAPP_MTL「MINUTE_MAPP」にて《Crossroom Groove》上映（カナダ・モントリオール）
+
+## Tools
+
+- Blender
+
+## English
+
+Born in 1999, Yuma Garments is a Tokyo-based video artist and motion graphic designer. Their animation work brings together seamless transformation through morphing, perspective, and optical-illusion structures. Drawing on a personal visual experience of strabismus, Yuma Garments explores the conditions under which spaces and objects appear "natural," and the perceptual gaps that emerge in motion.
+
+**Selected**
+
+- 2026 — Selected for "Eizo Sakka 100-nin 2026" (100 Japanese Video Artists)
+- 2026 — Agency for Cultural Affairs, Japan: Project to Support Emerging Media Arts Creators (FY2026), Exhibition Support Program — project "[見ることの物差し](https://creators.j-mediaarts.bunka.go.jp/project/2026-es36)"
+
+**Exhibitions & Screenings**
+
+- Oct 1, 2026 — *Crossroom Groove*, MINUTE_MAPP, MAPP_MTL (Montréal, Canada)
 
 ## Contact
 
