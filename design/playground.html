@@ -68,8 +68,8 @@ p { margin: 0; }
 .card .img, .page .fig { --bg: var(--card); }
 .cards.center .card .img { margin: 12px auto var(--pad); width: 64%; flex: none; aspect-ratio: 1 / 1; }
 .card .meta { position: absolute; right: var(--pad); top: calc(var(--pad) + 2px); }
-.card .lines div { padding: 1px 0; }
-.card .lines .s { display: inline-block; min-width: 7.5em; }
+.lines div { padding: 1px 0; }
+.lines .s { display: inline-block; min-width: 7.5em; }
 .about-mark { font: var(--dw) clamp(28px, 3.4vw, 54px)/.9 var(--font-d); letter-spacing: -0.055em; }
 
 /* article（Cosense のページ風） */
@@ -86,6 +86,57 @@ p { margin: 0; }
 .prose ul { padding-left: 1.2em; }
 .related { max-width: 760px; margin: 40px auto 0; }
 .related .cards { --per: 4; }
+
+/* ===== レイアウトのバリエーション ===== */
+.top.left { display: flex; justify-content: space-between; align-items: end; gap: 16px; text-align: left; padding-top: 28px; padding-bottom: 28px; }
+.top.left .s { margin: 0; text-align: right; }
+.top.left .logo { font-size: 26px; }
+
+/* Index Sheet：点線で区切った標本シート */
+.cards.l-sheet, .split .cards { gap: 0; border-top: var(--lw) var(--ls) var(--edge); border-left: var(--lw) var(--ls) var(--edge); }
+.l-sheet .card { background: var(--card); border-right: var(--lw) var(--ls) var(--edge); border-bottom: var(--lw) var(--ls) var(--edge); border-radius: 0; box-shadow: none !important; transform: none !important; padding: var(--pad); gap: 8px; }
+.l-sheet .card .row-top { display: flex; justify-content: space-between; gap: 8px; }
+.l-sheet .card .img { margin: auto; width: 60%; flex: none; aspect-ratio: 1 / 1; }
+.l-sheet .card h3 { padding: 0; }
+.l-sheet .card .body { padding: 0; }
+.l-sheet a.card:hover .img svg { filter: invert(1); }
+
+/* Mosaic：大小の正方形を混ぜる */
+.cards.l-mosaic { grid-auto-flow: dense; }
+.l-mosaic .card.big { grid-column: span 2; grid-row: span 2; }
+.l-mosaic .card h3 { padding-right: calc(var(--pad) + 2.6em); }
+.l-mosaic .card.big h3 { font-size: calc(var(--ts) * 1.7); letter-spacing: -0.035em; }
+.l-mosaic .card.big .about-mark { font-size: clamp(44px, 6vw, 96px); }
+
+/* Gallery：画像だけの正方形＋下にキャプション */
+.cards.l-gallery { row-gap: calc(var(--gap) + 18px); }
+.g-item { display: block; min-width: 0; }
+.g-img { aspect-ratio: 1 / 1; overflow: hidden; background: var(--card); --bg: var(--card); outline: var(--lw) solid var(--edge); outline-offset: calc(var(--lw) * -1); }
+.g-img svg { width: 100%; height: 100%; display: block; transition: transform .4s ease; }
+a.g-item:hover .g-img svg { transform: scale(1.04); }
+.g-txt { padding: var(--pad); display: flex; flex-direction: column; justify-content: space-between; }
+.g-cap { padding-top: 8px; }
+.g-t { font: var(--dw) var(--ts)/1.3 var(--font-d); letter-spacing: var(--tr); margin-top: 2px; }
+a.g-item:hover .g-t { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Full Bleed：画像を全面に、タイトルはラベル */
+.l-bleed .card.bl { --bg: var(--card); }
+.bl svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.chip { position: absolute; left: var(--pad); top: var(--pad); max-width: calc(100% - var(--pad) * 2); background: var(--card); color: var(--ink); font: var(--dw) var(--ts)/1.3 var(--font-d); letter-spacing: var(--tr); padding: 4px 8px; }
+.chip2 { position: absolute; right: var(--pad); bottom: var(--pad); background: var(--card); padding: 2px 6px; }
+.l-bleed a.card.bl:hover svg { filter: invert(1); }
+.l-bleed .card.bl-txt { background: var(--ink); color: var(--card); }
+.bl-txt .m { color: color-mix(in srgb, var(--card) 55%, transparent); }
+.bl-txt .lnk { color: var(--card); }
+
+/* Split：左に固定サイドバー */
+.split { display: grid; grid-template-columns: minmax(220px, 3fr) 9fr; gap: calc(var(--gap) * 2 + 16px); padding-top: 32px; }
+.split aside { position: sticky; top: 24px; align-self: start; }
+.split aside .logo { font-size: 30px; }
+.split aside section { border-top: var(--lw) solid var(--ink); padding: 8px 0 20px; }
+.split aside .filters { flex-direction: column; align-items: flex-start; gap: 2px; }
+.split .cards { grid-template-columns: repeat(var(--per-in), minmax(0, 1fr)); }
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; } .split aside { position: static; } }
 
 @media (max-width: 900px) { .cards { grid-template-columns: repeat(min(var(--per), 3), minmax(0, 1fr)); } }
 @media (max-width: 640px) {
@@ -220,32 +271,35 @@ function art(i) {
 /* ---------- パラメータ ---------- */
 const BASE = {
   type: { display: "Helvetica Neue", weight: 700, titleSize: 15, tracking: -0.02, body: "Helvetica Neue", bodySize: 13, bodyTracking: 0, mono: "IBM Plex Mono", monoUpper: true },
-  grid: { per: 4, gap: 20, margin: 32, maxw: 1400, radius: 2, pad: 16, cardStyle: "shadow", image: "fill", lines: "back", lineStyle: "dashed", lineOpacity: 0.18, lineWidth: 1, rows: true },
+  grid: { layout: "cosense", per: 4, gap: 20, margin: 32, maxw: 1400, radius: 2, pad: 16, cardStyle: "shadow", image: "fill", lines: "back", lineStyle: "dashed", lineOpacity: 0.18, lineWidth: 1, rows: true },
 };
 const PRESETS = {
-  "Cosense Mono": { colors: { bg: "#efefed", card: "#ffffff", edge: "#e2e2e0", ink: "#111111", muted: "#7a7a7a", line: "#000000", accent: "#111111" } },
-  "Cosense Blue": { colors: { bg: "#f2f2f2", card: "#ffffff", edge: "#e4e4e4", ink: "#333333", muted: "#888888", line: "#3355cc", accent: "#3355cc" }, grid: { lines: "none" } },
-  "Paper Line":   { colors: { bg: "#f4f4f1", card: "#f4f4f1", edge: "#111111", ink: "#111111", muted: "#7a7a7a", line: "#000000", accent: "#111111" }, grid: { cardStyle: "line", radius: 0, gap: 0, lineOpacity: 0.3 } },
-  "LINE Seed":    { colors: { bg: "#ffffff", card: "#f4f4f4", edge: "#e6e6e6", ink: "#000000", muted: "#808080", line: "#000000", accent: "#000000" },
-                    grid: { cardStyle: "flat", radius: 14, gap: 16, lines: "none" },
-                    type: { display: "LINE Seed JP", body: "LINE Seed JP", weight: 700, tracking: 0, mono: "LINE Seed JP", monoUpper: false } },
-  "Night":        { colors: { bg: "#0e0e0e", card: "#1a1a1a", edge: "#2a2a2a", ink: "#f0f0f0", muted: "#8a8a8a", line: "#ffffff", accent: "#f0f0f0" }, grid: { cardStyle: "flat", lineOpacity: 0.12 } },
+  "Yours":       { colors: { bg: "#efefed", card: "#ffffff", edge: "#e2e2e0", ink: "#111111", muted: "#7a7a7a", line: "#000000", accent: "#111111" } },
+  "Index Sheet": { colors: { bg: "#f4f4f1", card: "#f4f4f1", edge: "#111111" }, grid: { layout: "sheet", gap: 0, radius: 0, lines: "none", pad: 14 } },
+  "Mosaic":      { colors: { edge: "#d4d4d1" }, grid: { layout: "mosaic", per: 5, gap: 10, radius: 0, cardStyle: "line", lineOpacity: 0.12 } },
+  "Gallery":     { colors: { bg: "#ffffff", card: "#f3f3f1", edge: "#e2e2e0" }, grid: { layout: "gallery", gap: 24, radius: 0, lines: "none" } },
+  "Full Bleed":  { colors: { bg: "#e8e8e5" }, grid: { layout: "bleed", gap: 6, radius: 0, lines: "none", cardStyle: "flat", pad: 12 } },
+  "Split":       { colors: { edge: "#c9c9c6", card: "#f7f7f5" }, grid: { layout: "split", gap: 0, radius: 0, lines: "none", pad: 14 } },
+  "LINE Seed":   { colors: { bg: "#ffffff", card: "#f4f4f4", edge: "#e6e6e6", ink: "#000000", muted: "#808080", accent: "#000000" },
+                   grid: { layout: "mosaic", cardStyle: "flat", radius: 14, gap: 14, lines: "none" },
+                   type: { display: "LINE Seed JP", body: "LINE Seed JP", tracking: 0, mono: "LINE Seed JP", monoUpper: false } },
+  "Night":       { colors: { bg: "#0e0e0e", card: "#0e0e0e", edge: "#3a3a3a", ink: "#f0f0f0", muted: "#8a8a8a", line: "#ffffff", accent: "#f0f0f0" }, grid: { layout: "sheet", gap: 0, radius: 0, lines: "none" } },
 };
 const CONTENT_DEFAULT = {
-  name: "Yuma",
-  tagline: "Media Art / Perspective / Optical Illusion",
-  about: "パースペクティブを軸に、錯視を扱うメディアアーティスト / デザイナー。",
+  name: "Yuma Garments",
+  tagline: "visual artist Motion graphic",
+  about: "パースペクティブを軸に、錯視を扱う映像作家",
   showInfo: true, showNews: true, showWorks: true, showPosts: true,
 };
 const FONTS = ["Helvetica Neue", "LINE Seed JP", "Inter Tight", "Inter", "Archivo", "Arial", "Space Grotesk"];
 const MONO = ["IBM Plex Mono", "LINE Seed JP", "Space Mono", "JetBrains Mono", "VT323", "DotGothic16", "Helvetica Neue"];
-const STORE = "yuma-design-params-v5", SLOTS = "yuma-design-slots-v5";
+const STORE = "yuma-design-params-v6", SLOTS = "yuma-design-slots-v5";
 const clone = o => JSON.parse(JSON.stringify(o));
 function build(presetName, extra = {}) {
   const p = PRESETS[presetName] || {};
   return {
     preset: presetName,
-    colors: { ...PRESETS["Cosense Mono"].colors, ...p.colors, ...extra.colors },
+    colors: { ...PRESETS["Yours"].colors, ...p.colors, ...extra.colors },
     type: { ...BASE.type, ...p.type, ...extra.type },
     grid: { ...BASE.grid, ...p.grid, ...extra.grid },
     content: { ...CONTENT_DEFAULT, ...extra.content },
@@ -255,38 +309,73 @@ const store = {
   get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
-let P = (() => { const s = store.get(STORE); return s ? build(s.preset, s) : build("Cosense Mono"); })();
+let P = (() => { const s = store.get(STORE); return s ? build(s.preset, s) : build("Yours"); })();
 
 /* ---------- 描画 ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 let filter = "All";
 
-function header() {
-  return `<header class="top"><a class="logo" href="#">${esc(P.content.name)}<sup style="font-size:.35em">®</sup></a><div class="s m">${esc(P.content.tagline)}</div></header>`;
+function header(mode = "center") {
+  return `<header class="top ${mode}${mode === "left" ? " frame" : ""}"><a class="logo" href="#">${esc(P.content.name)}<sup style="font-size:.35em">®</sup></a><div class="s m">${esc(P.content.tagline)}${mode === "left" ? "<br>Tokyo, JP" : ""}</div></header>`;
 }
-const postCard = (p, i) => `<a class="card" href="#post-${i}"><h3>${esc(p.title)}</h3><div class="img">${art(p.art)}</div></a>`;
-function cardsHome() {
-  const ct = P.content, out = [];
-  const show = t => filter === "All" || filter === t;
-  if (show("About")) out.push(`<a class="card" href="#"><h3>about</h3><div class="body txt"><div class="about-mark">${esc(ct.name)}<br>Studio</div><p class="m" style="margin-top:14px">${esc(ct.about)}</p></div></a>`);
-  if (ct.showInfo && show("About")) out.push(`<div class="card"><h3>info</h3><div class="body txt lines">
-    <div><span class="s m">contact</span>yuma(at)example.com</div>
-    <div><span class="s m">github</span><a class="lnk" href="https://github.com/yumagarments">yumagarments</a></div>
-    <div><span class="s m">instagram</span><a class="lnk" href="#">@yuma</a></div>
-    <div><span class="s m">based in</span>Tokyo, JAPAN</div></div></div>`);
-  if (ct.showNews && show("News")) out.push(`<div class="card"><h3>news</h3><div class="body txt lines">${NEWS.map(n => `<div><span class="s m">${n.date}</span><br><a class="lnk" href="#">${esc(n.title)}</a></div>`).join("")}</div></div>`);
-  if (ct.showWorks && show("Works")) WORKS.forEach(w => out.push(`<a class="card" href="#"><h3>${esc(w.title)}</h3><span class="s m meta">${w.no}</span><div class="img">${art(w.art)}</div></a>`));
-  if (ct.showPosts) POSTS.forEach((p, i) => { if (show("Notes") || show(p.tag)) out.push(postCard(p, i)); });
-  return out.join("");
+// カードの中身をデータにして、レイアウトごとに描き分ける
+function items(opts = {}) {
+  const ct = P.content, out = [], show = t => filter === "All" || filter === t;
+  if (!opts.noText) {
+    if (show("About")) out.push({ kind: "about", title: "about", no: "00", meta: "Profile", big: true,
+      text: `<div class="about-mark">${esc(ct.name).replace(" ", "<br>")}</div><p class="m" style="margin-top:14px">${esc(ct.about)}</p>` });
+    if (ct.showInfo && show("About")) out.push({ kind: "info", title: "info", no: "—", meta: "Contact", text: `<div class="lines">
+      <div><span class="s m">contact</span>yuma(at)example.com</div>
+      <div><span class="s m">github</span><a class="lnk" href="https://github.com/yumagarments">yumagarments</a></div>
+      <div><span class="s m">instagram</span><a class="lnk" href="#">@yuma</a></div>
+      <div><span class="s m">based in</span>Tokyo, JAPAN</div></div>` });
+    if (ct.showNews && show("News")) out.push({ kind: "news", title: "news", no: "—", meta: "Update", text: `<div class="lines">${NEWS.map(n => `<div><span class="s m">${n.date}</span><br><a class="lnk" href="#">${esc(n.title)}</a></div>`).join("")}</div>` });
+  }
+  if (ct.showWorks && show("Works")) WORKS.forEach((w, k) => out.push({ kind: "work", title: w.title, no: w.no, meta: w.text, art: w.art, href: "#", big: k === 0 }));
+  if (ct.showPosts) POSTS.forEach((p, i) => { if (show("Notes") || show(p.tag)) out.push({ kind: "post", title: p.title, no: String(i + 1).padStart(2, "0"), meta: p.tag, art: p.art, href: `#post-${i}`, big: i === 4 }); });
+  return out;
+}
+const wrap = (it, cls, inner) => it.href ? `<a class="${cls}" href="${it.href}">${inner}</a>` : `<div class="${cls}">${inner}</div>`;
+const RENDER = {
+  cosense: it => wrap(it, "card", `<h3>${esc(it.title)}</h3>${it.kind === "work" ? `<span class="s m meta">${it.no}</span>` : ""}${it.art != null ? `<div class="img">${art(it.art)}</div>` : `<div class="body txt">${it.text}</div>`}`),
+  mosaic: it => wrap(it, "card" + (it.big ? " big" : ""), `<h3>${esc(it.title)}</h3><span class="s m meta">${it.no}</span>${it.art != null ? `<div class="img">${art(it.art)}</div>` : `<div class="body txt">${it.text}</div>`}`),
+  sheet: it => wrap(it, "card", `<div class="row-top s"><span>${it.no}</span><span class="m">${esc(it.meta)}</span></div>${it.art != null ? `<div class="img">${art(it.art)}</div>` : `<div class="body txt">${it.text}</div>`}<h3>${esc(it.title)}</h3>`),
+  gallery: it => it.art != null
+    ? wrap(it, "g-item", `<div class="g-img">${art(it.art)}</div><div class="g-cap"><div class="s m">${it.no} — ${esc(it.meta)}</div><div class="g-t">${esc(it.title)}</div></div>`)
+    : wrap(it, "g-item", `<div class="g-img g-txt"><div class="s m">${it.title}</div>${it.text}</div><div class="g-cap"><div class="s m">${it.no} — ${esc(it.meta)}</div></div>`),
+  bleed: it => it.art != null
+    ? wrap(it, "card bl", `${art(it.art)}<span class="chip">${esc(it.title)}</span><span class="chip2 s">${it.no} / ${esc(it.meta)}</span>`)
+    : wrap(it, "card bl-txt", `<h3>${esc(it.title)}</h3><div class="body txt">${it.text}</div>`),
+};
+function filtersHTML() {
+  const tabs = ["All", "About", "News", "Works", "Notes", ...new Set(POSTS.map(p => p.tag))];
+  return `<div class="filters s">${tabs.map(t => `<button data-f="${t}"${t === filter ? ' class="on"' : ""}>${t}</button>`).join("")}</div>`;
 }
 function home() {
-  const tabs = ["All", "About", "News", "Works", "Notes", ...new Set(POSTS.map(p => p.tag))];
-  return `${header()}<main class="frame">
-    <div class="filters s">${tabs.map(t => `<button data-f="${t}"${t === filter ? ' class="on"' : ""}>${t}</button>`).join("")}</div>
-    <div class="cards ${P.grid.cardStyle} ${P.grid.image}" id="cards">${cardsHome()}</div>
+  const L = P.grid.layout;
+  if (L === "split") return splitHome();
+  const cls = L === "cosense" || L === "mosaic" ? `${P.grid.cardStyle} ${P.grid.image}` : "";
+  return `${header(L === "cosense" || L === "mosaic" ? "center" : "left")}<main class="frame">
+    ${filtersHTML()}
+    <div class="cards l-${L} ${cls}" id="cards">${items().map(RENDER[L]).join("")}</div>
   </main>`;
 }
+function splitHome() {
+  const ct = P.content, txt = Object.fromEntries(items().filter(x => x.text).map(x => [x.kind, x.text]));
+  return `<main class="frame split">
+    <aside>
+      <a class="logo" href="#">${esc(ct.name)}<sup style="font-size:.35em">®</sup></a>
+      <p class="s m" style="margin:6px 0 28px">${esc(ct.tagline)}</p>
+      <section><div class="s m">About</div><p style="margin-top:6px">${esc(ct.about)}</p></section>
+      ${ct.showInfo ? `<section><div class="s m">Info</div><div style="margin-top:6px">${txt.info || ""}</div></section>` : ""}
+      ${ct.showNews ? `<section><div class="s m">News</div><div style="margin-top:6px">${txt.news || ""}</div></section>` : ""}
+      <section><div class="s m">Index</div><div style="margin-top:6px">${filtersHTML()}</div></section>
+    </aside>
+    <div class="cards l-sheet" id="cards">${items({ noText: true }).map(RENDER.sheet).join("")}</div>
+  </main>`;
+}
+function postCard(p, i) { return RENDER.cosense({ kind: "post", title: p.title, art: p.art, href: `#post-${i}` }); }
 function article(i) {
   const p = POSTS[i];
   const related = POSTS.map((q, j) => ({ q, j })).filter(({ q, j }) => j !== i && q.tag === p.tag).concat(POSTS.map((q, j) => ({ q, j })).filter(({ q, j }) => j !== i && q.tag !== p.tag)).slice(0, 4);
@@ -342,6 +431,7 @@ function apply() {
   r.setProperty("--bs", t.bodySize + "px");
   r.setProperty("--btr", t.bodyTracking + "em");
   r.setProperty("--per", g.per);
+  r.setProperty("--per-in", Math.max(2, g.per - 1));
   r.setProperty("--gap", g.gap + "px");
   r.setProperty("--margin", g.margin + "px");
   r.setProperty("--maxw", g.maxw >= 2400 ? "100vw" : g.maxw + "px");
@@ -370,6 +460,7 @@ const CONTROLS = [
     ["colors.ink", "文字", "color"], ["colors.muted", "補助文字", "color"], ["colors.accent", "リンク", "color"], ["colors.line", "グリッド線", "color"],
   ]],
   ["カード", [
+    ["grid.layout", "レイアウト", "select", ["cosense", "sheet", "mosaic", "gallery", "bleed", "split"]],
     ["grid.per", "1 行の枚数", "range", 2, 7, 1, "枚"],
     ["grid.gap", "カード間隔", "range", 0, 48, 2, "px"],
     ["grid.cardStyle", "カードの見た目", "select", ["shadow", "line", "flat"]],
@@ -445,7 +536,7 @@ function renderSlots() {
 }
 function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 1600); }
 const exportJSON = () => JSON.stringify(P, null, 2);
-function load(obj) { P = build(obj.preset in PRESETS ? obj.preset : "Cosense Mono", obj); P.preset = obj.preset || "Custom"; apply(); buildPanel(); }
+function load(obj) { P = build(obj.preset in PRESETS ? obj.preset : "Yours", obj); P.preset = obj.preset || "Custom"; apply(); buildPanel(); }
 
 $("#panel-body").addEventListener("input", e => {
   const el = e.target, k = el.dataset.k; if (!k) return;
@@ -468,7 +559,7 @@ $("#panel-body").addEventListener("click", async e => {
     a.href = URL.createObjectURL(new Blob([exportJSON()], { type: "application/json" }));
     a.download = "design-params.json"; a.click(); toast("ダウンロードしました");
   } else if (t.id === "reset") {
-    if (confirm("初期状態に戻しますか？")) { P = build("Cosense Mono"); apply(); buildPanel(); }
+    if (confirm("初期状態に戻しますか？")) { P = build("Yours"); apply(); buildPanel(); }
   } else if (t.id === "import-json") {
     try { load(JSON.parse($("#import-box").value)); toast("読み込みました"); } catch { toast("JSON の形式が正しくありません"); }
   } else if (t.id === "save-slot") {
