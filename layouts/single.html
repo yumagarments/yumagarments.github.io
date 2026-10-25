@@ -6,7 +6,7 @@
     {{ .Date.Format "2006.01.02" }}{{ if ne (.Lastmod.Format "20060102") (.Date.Format "20060102") }}（更新 {{ .Lastmod.Format "2006.01.02" }}）{{ end }}{{ with .Params.meta }} / {{ . }}{{ end }}
     {{ range .Params.tags }} / <a class="lnk" href="{{ printf "tags/%s/" (urlize .) | relURL }}">#{{ . }}</a>{{ end }}
   </div>
-  {{ if or .Params.image (ne .Section "news") }}<div class="fig">{{ partial "visual.html" . }}</div>{{ end }}
+  {{ with .Params.video }}<div class="fig-video">{{ partial "youtube.html" . }}</div>{{ else }}{{ if or .Params.image (ne $.Section "news") }}<div class="fig">{{ partial "visual.html" $ }}</div>{{ end }}{{ end }}
   <div class="prose">{{ .Content }}</div>
 </article>
 {{ with where (first 6 (site.RegularPages.Related .)) "Section" "!=" "news" }}

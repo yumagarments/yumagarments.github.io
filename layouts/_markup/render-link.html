@@ -1,7 +1,9 @@
 {{- /* 本文に URL だけを書いた行は、相手ページの OGP（タイトル・説明・サムネ）を取得してリンクカードにする */ -}}
 {{- $u := .Destination -}}
 {{- $bare := and (or (hasPrefix $u "http://") (hasPrefix $u "https://")) (eq (.Text | string | plainify | htmlUnescape) $u) -}}
-{{- if $bare -}}
+{{- if and $bare (findRE `(youtube\.com/(watch|shorts/)|youtu\.be/)` $u 1) -}}
+{{- partial "youtube.html" $u -}}
+{{- else if $bare -}}
   {{- $host := (urls.Parse $u).Host -}}
   {{- $og := dict -}}
   {{- with try (resources.GetRemote $u (dict "headers" (dict "User-Agent" "Mozilla/5.0 (compatible; LinkCardBot; +https://yumagarments.github.io/)"))) -}}

@@ -121,3 +121,8 @@ aside .label { letter-spacing: .15em; }
 
 /* ピン留め */
 .pin { font-weight: 700; }
+
+/* YouTube 埋め込み（黒線で囲む） */
+.video { display: block; position: relative; width: 100%; aspect-ratio: 16 / 9; border: 1px solid var(--ink); background: #000; }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.fig-video { margin: 24px 0; }
