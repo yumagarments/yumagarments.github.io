@@ -32,24 +32,29 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
 
 /* ---------- カード（標本シート風：点線で区切った正方形） ---------- */
 .cards { display: grid; grid-template-columns: repeat(var(--per-in), minmax(0, 1fr)); border-top: 1px dashed var(--edge); border-left: 1px dashed var(--edge); }
-.card {
-  aspect-ratio: 1 / 1; background: var(--card); padding: var(--pad); border-radius: var(--radius);
-  border-right: 1px dashed var(--edge); border-bottom: 1px dashed var(--edge);
-  display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; min-width: 0; overflow: hidden;
-}
+/* カード：正方形のマスを画像で全面に埋め、タイトルは左上に白いラベルで重ねる */
+.card { position: relative; display: block; aspect-ratio: 1 / 1; min-width: 0; overflow: hidden; background: var(--card);
+  border-right: 1px dashed var(--edge); border-bottom: 1px dashed var(--edge); }
 .card[hidden] { display: none; }
-.row-top { display: flex; justify-content: space-between; gap: 8px; }
-.row-top .m { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-/* 画像はタイトルを除いた残りの高さの中で上下左右中央に */
-.card .imgbox { container-type: size; display: grid; place-items: center; min-height: 0; }
-.card .img { width: min(70cqw, 100cqh); aspect-ratio: 1 / 1; overflow: hidden; --bg: var(--card); }
-.card .img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card .img { position: absolute; inset: 0; --bg: var(--card); }
+.card .img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
 .card .img svg, .art svg { width: 100%; height: 100%; display: block; }
 .art { width: 100%; height: 100%; }
-/* タイトルは常に 3 行分の高さを確保（長い場合は 3 行で省略）→ 画像の大きさと位置がどのカードでも揃う */
-.card h3 { --lh: 1.3; margin: 0; font: var(--dw) var(--ts)/var(--lh) var(--font-d); letter-spacing: var(--tr);
-  height: calc(var(--lh) * 3em); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
-.card:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
+.card:hover .img img, .card:hover .img svg { transform: scale(1.03); }
+.card h3 { position: absolute; left: var(--pad); top: var(--pad); max-width: calc(100% - var(--pad) * 2); margin: 0; padding: 5px 8px 6px;
+  background: var(--card); color: var(--ink); font: var(--dw) var(--ts)/1.3 var(--font-d); letter-spacing: var(--tr);
+  overflow: hidden; }
+.card h3 .t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+/* 2 行に収まらないタイトルは、ホバーすると 1 行で横に流れる */
+.card h3 .flow { display: none; white-space: nowrap; width: max-content; }
+.card h3 .flow span { padding-right: 2.5em; }
+.card.long:hover h3 { width: calc(100% - var(--pad) * 2); padding-left: 0; padding-right: 0; border-left: 8px solid var(--card); border-right: 8px solid var(--card); }
+.card.long:hover h3 .t { display: none; }
+.card.long:hover h3 .flow { display: flex; animation: title-flow var(--dur, 8s) linear infinite; }
+/* 右下の小さな更新日 */
+.card .date { position: absolute; right: var(--pad); bottom: var(--pad); background: var(--card); color: var(--muted); padding: 2px 6px; font-size: 10px; }
+@keyframes title-flow { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .card.long:hover h3 .flow { animation: none; } }
 
 .list-head { display: flex; justify-content: space-between; border-top: 1px solid var(--ink); padding: 8px 0 14px; }
 .rows { border-top: 1px dashed var(--edge); }
@@ -85,8 +90,9 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
 @media (max-width: 560px) {
   :root { --margin: 16px; }
   .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .card { padding: 10px; }
-  .card h3 { font-size: 12px; --lh: 1.35; }
+  .card { --pad: 8px; }
+  .card h3 { font-size: 11px; padding: 3px 6px 4px; }
+  .card .date { font-size: 9px; padding: 1px 5px; }
   body { font-size: 13px; letter-spacing: .03em; }
   .logo { font-size: 24px; }
   .s { font-size: 9.5px; }
@@ -97,7 +103,6 @@ aside section { border-top: 1px solid var(--ink); padding: 8px 0 20px; }
   .page h1 { font-size: 20px; }
   .prose { font-size: 14px; line-height: 1.8; }
   .row .t { font-size: 13px; }
-  .card .img { width: min(80cqw, 100cqh); }
   .row { grid-template-columns: 1fr; gap: 2px; }
 }
 

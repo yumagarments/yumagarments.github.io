@@ -53,6 +53,19 @@ function art(i) {
 /* 画像がないカードに錯視アートを描く */
 document.querySelectorAll("[data-art]").forEach(el => { el.innerHTML = art(Number(el.dataset.art) || 0); });
 
+/* 2 行に収まらないタイトルに印を付ける（ホバーで流す用） */
+function markLongTitles() {
+  document.querySelectorAll(".card h3").forEach(h => {
+    const t = h.querySelector(".t"); if (!t) return;
+    const long = t.scrollHeight > t.clientHeight + 1;
+    h.closest(".card").classList.toggle("long", long);
+    if (long) h.style.setProperty("--dur", Math.max(5, t.textContent.length * 0.32) + "s");
+  });
+}
+markLongTitles();
+document.fonts?.ready.then(markLongTitles);
+addEventListener("resize", markLongTitles);
+
 /* トップの絞り込み（#f=works など） */
 const cards = document.querySelector("[data-filterable]");
 function applyFilter() {

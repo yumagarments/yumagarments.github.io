@@ -1,6 +1,7 @@
 {{ $pg := .page }}
 {{ $tags := slice }}{{ range $pg.Params.tags }}{{ $tags = $tags | append (urlize .) }}{{ end }}
 <a class="card" href="{{ $pg.RelPermalink }}" data-kind="{{ $pg.Section }}" data-tags="{{ delimit $tags " " }}">
-  <div class="imgbox"><div class="img">{{ partial "visual.html" $pg }}</div></div>
-  <h3>{{ $pg.Title }}</h3>
+  <div class="img">{{ partial "visual.html" $pg }}</div>
+  <h3><span class="t">{{ $pg.Title }}</span><span class="flow" aria-hidden="true"><span>{{ $pg.Title }}</span><span>{{ $pg.Title }}</span></span></h3>
+  <span class="date s" title="更新日">{{ $pg.Lastmod.Format "2006.01.02" }}</span>
 </a>

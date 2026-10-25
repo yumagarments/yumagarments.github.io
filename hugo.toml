@@ -4,6 +4,7 @@ baseURL = "https://yumagarments.github.io/"
 locale = "ja"
 title = "Yuma Garments"
 timeZone = "Asia/Tokyo"   # 日付を日本時間として扱う
+enableGitInfo = true      # 更新日を Git の履歴から取得
 
 [taxonomies]
   tag = "tags"
@@ -22,3 +23,6 @@ timeZone = "Asia/Tokyo"   # 日付を日本時間として扱う
 [params]
   # 閲覧数の計測（GoatCounter）。https://www.goatcounter.com で登録したコード名を入れると有効になります
   goatcounter = ""
+
+[frontmatter]
+  lastmod = ["lastmod", ":git", "date"]
