@@ -3,6 +3,8 @@ title: "個展開催のお知らせ"
 date: 2026-11-26
 image: "/images/solo-2027-mirukoto.jpg"
 hideFig: true
+tags: ["Perspective", "Illusion"]
+related: ["/works/mirukoto-no-monosashi"]
 ---
 ## Yuma Garments 個展「見ることの物差し」
 
@@ -20,7 +22,7 @@ hideFig: true
 | 入場 | 無料 |
 | 会場 | 新宿眼科画廊 スペースO<br>東京都新宿区新宿5-18-11（[地図](https://www.google.com/maps/search/?api=1&query=新宿眼科画廊)） |
 
-## 展示について
+## 概要
 
 「見ることの物差し」は、映像作家・モーションデザイナーのYuma Garmentsによる、奥行きや立体感の捉え方をめぐる個展です。
 
@@ -44,7 +46,6 @@ hideFig: true
 
 - [新宿眼科画廊の展示ページ](https://www.gankagarou.com/show-item/202701yumagarments/)
 
-ぜひ会場で、見比べてみてください。
 
 ## English
 

@@ -9,7 +9,10 @@
   {{ with .Params.video }}<div class="fig-video">{{ partial "video-embed.html" . }}</div>{{ else }}{{ if and (not .Params.hideFig) (or .Params.image (ne $.Section "news")) }}<div class="fig">{{ partial "visual.html" $ }}</div>{{ end }}{{ end }}
   <div class="prose">{{ .Content }}</div>
 </article>
-{{ with where (first 6 (site.RegularPages.Related .)) "Section" "!=" "news" }}
+{{ $pinned := slice }}{{ range .Params.related }}{{ with site.GetPage . }}{{ $pinned = $pinned | append . }}{{ end }}{{ end }}
+{{ $auto := where (first 6 (site.RegularPages.Related .)) "Section" "!=" "news" }}
+{{ $rel := $pinned }}{{ range $auto }}{{ if not (in $pinned .) }}{{ $rel = $rel | append . }}{{ end }}{{ end }}
+{{ with $rel }}
 <section class="related">
   <div class="list-head s"><span>Related</span></div>
   <div class="cards">{{ range first 4 . }}{{ partial "card.html" (dict "page" . "no" "") }}{{ end }}</div>
