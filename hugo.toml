@@ -22,7 +22,7 @@ enableGitInfo = true      # 更新日を Git の履歴から取得
 
 [params]
   # 閲覧数の計測（GoatCounter）。https://www.goatcounter.com で登録したコード名を入れると有効になります
-  goatcounter = ""
+  goatcounter = "yumagarments"
 
 [frontmatter]
   lastmod = ["lastmod", ":git", "date"]
