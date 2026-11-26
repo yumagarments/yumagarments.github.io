@@ -35,8 +35,6 @@ related: ["/works/mirukoto-no-monosashi"]
 自分にとって自然な見え方も、他者とは異なるかもしれません。
 作品を繰り返し見比べることを通して、見ることの判断を支える、それぞれの「物差し」を問いかけます。
 
-## 支援
-
 支援：令和8年度文化庁メディア芸術クリエイター育成支援事業<br>
 Support: Project to Support Emerging Media Arts Creators, 2026
 
