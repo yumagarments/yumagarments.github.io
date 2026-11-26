@@ -131,3 +131,9 @@ aside .label { letter-spacing: .15em; }
 /* Instagram 埋め込み */
 .insta { max-width: 520px; }
 .insta .instagram-media { margin: 0 !important; min-width: 0 !important; width: 100% !important; border: 1px solid var(--ink) !important; border-radius: 0 !important; box-shadow: none !important; }
+
+/* 本文の表（開催概要など） */
+.prose table { border-collapse: collapse; width: 100%; max-width: 560px; }
+.prose thead:has(th:empty) { display: none; }
+.prose th, .prose td { text-align: left; vertical-align: top; padding: .55em .8em .55em 0; border-bottom: 1px solid var(--ink); }
+.prose td:first-child { white-space: nowrap; font-weight: 700; width: 5.5em; }

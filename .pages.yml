@@ -21,6 +21,7 @@ content:
       - { name: pinned, label: トップに固定（ピン留め）, type: boolean }
       - { name: news, label: ニュース欄にも表示, type: boolean }
       - { name: hideInGrid, label: トップのグリッドに出さない, type: boolean }
+      - { name: hideFig, label: 記事上部の正方形画像を出さない（カード画像としてだけ使う）, type: boolean }
       - { name: body, label: 本文, type: rich-text, options: { format: markdown } }
 
   - name: works
@@ -55,6 +56,7 @@ content:
       - { name: date, label: 日付, type: date }
       - { name: draft, label: 下書き, type: boolean }
       - { name: hideInGrid, label: トップのグリッドに出さない, type: boolean }
+      - { name: hideFig, label: 記事上部の正方形画像を出さない（カード画像としてだけ使う）, type: boolean }
       - { name: body, label: 本文, type: rich-text, options: { format: markdown } }
 
   - name: profile

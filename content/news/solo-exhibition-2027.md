@@ -2,36 +2,56 @@
 title: "個展開催のお知らせ"
 date: 2026-11-26
 image: "/images/solo-2027-mirukoto.jpg"
+hideFig: true
 ---
-2027年1月、新宿眼科画廊 スペースO にて、映像インスタレーション個展「見ることの物差し」を開催します。
+## Yuma Garments 個展「見ることの物差し」
 
-![Yuma Garments 映像個展「見ることの物差し」](/images/solo-2027-mirukoto.jpg)
+2027年1月、新宿眼科画廊で個展を開催します。
+アニメーション映像と立体模型による展示です。
 
-## 見ることの物差し — 奥行きをめぐる映像インスタレーション展
-
-斜視による自身の視覚経験を出発点に、アニメーション映像と部屋をかたどった立体模型によって、「自然に見える」ことと違和感のあいだを探る展示です。
-
-止まっているときには自然に見える形も、動いたり、見る位置が変わったりすると、奥行きや前後関係の予測がずれていきます。モニターや壁面の映像と立体模型を見比べながら、何を自然と感じ、何に違和感を覚えるのか。見ることを支えている、一人ひとりの「物差し」を問いかけます。
+![Yuma Garments 個展「見ることの物差し」](/images/solo-2027-mirukoto.jpg)
 
 ## 開催概要
 
-- **会期**：2027年1月15日（金）〜 1月27日（水）
-- **時間**：12:00〜20:00（水曜は17:00まで）
-- **休廊日**：木曜日
-- **入場**：無料
-- **会場**：新宿眼科画廊 スペースO<br>東京都新宿区新宿5-18-11（[地図](https://www.google.com/maps/search/?api=1&query=新宿眼科画廊)）
-- **支援**：令和8年度 文化庁メディア芸術クリエイター育成支援事業
+| | |
+| --- | --- |
+| 会期 | **2027年1月15日（金）〜 1月27日（水）** |
+| 時間 | 12:00〜20:00（水曜は17:00まで） |
+| 休廊日 | 木曜日 |
+| 入場 | 無料 |
+| 会場 | 新宿眼科画廊 スペースO<br>東京都新宿区新宿5-18-11（[地図](https://www.google.com/maps/search/?api=1&query=新宿眼科画廊)） |
 
-展示の詳細：[新宿眼科画廊　展示ページ](https://www.gankagarou.com/show-item/202701yumagarments/)
+## どんな展示か
 
-ぜひご来場ください。
+出発点は、自分の斜視による見え方です。
+
+止まっているときは自然に見える形も、
+動いたり、見る位置が変わったりすると、
+奥行きや前後の感じ方が少しずつずれていきます。
+
+会場では、モニターや壁に映す映像と、部屋をかたどった立体模型を見比べられます。
+何を「自然」と感じ、どこで「あれ？」と思うのか。
+ふだん無意識に使っている、自分なりの「見ることの物差し」に気づくきっかけになればうれしいです。
+
+## 文化庁の支援について
+
+本展は、**令和8年度 文化庁メディア芸術クリエイター育成支援事業**の「国内クリエイター発表支援プログラム」に採択された企画「見ることの物差し」の発表展です。
+
+- [採択のお知らせ](/works/mirukoto-no-monosashi/)
+- [文化庁 クリエイター育成支援事業の企画ページ](https://creators.j-mediaarts.bunka.go.jp/project/2026-es36)
+
+## リンク
+
+- [新宿眼科画廊の展示ページ](https://www.gankagarou.com/show-item/202701yumagarments/)
+
+ぜひ会場で、見比べてみてください。
 
 ## English
 
-**Yuma Garments Solo Exhibition — "Mirukoto no Monosashi" (The Measure of Seeing)**
+**Yuma Garments Solo Exhibition "Mirukoto no Monosashi"**
 
 - **Dates**: January 15 (Fri) – 27 (Wed), 2027
-- **Hours**: 12:00–20:00 (Wednesdays until 17:00), closed on Thursdays
+- **Hours**: 12:00–20:00 (Wed until 17:00) / Closed on Thursdays
 - **Admission**: Free
-- **Venue**: Space O, Shinjuku Ophthalmologist Gallery (Shinjuku Ganka Garou), 5-18-11 Shinjuku, Shinjuku-ku, Tokyo
-- **Support**: Project to Support Emerging Media Arts Creators, 2026
+- **Venue**: Space O, Shinjuku Ophthalmologist Gallery, 5-18-11 Shinjuku, Shinjuku-ku, Tokyo
+- **Support**: Project to Support Emerging Media Arts Creators, 2026 (Agency for Cultural Affairs, Government of Japan)
