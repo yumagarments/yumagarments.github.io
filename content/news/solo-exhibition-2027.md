@@ -8,7 +8,7 @@ related: ["/works/mirukoto-no-monosashi"]
 ---
 ## Yuma Garments 個展「見ることの物差し」
 
-2027年1月、新宿眼科画廊で個展を開催します。
+2027年1月15日より新宿眼科画廊で個展を開催します。
 
 ![Yuma Garments 個展「見ることの物差し」](/images/solo-2027-mirukoto.jpg)
 
@@ -35,7 +35,10 @@ related: ["/works/mirukoto-no-monosashi"]
 自分にとって自然な見え方も、他者とは異なるかもしれません。
 作品を繰り返し見比べることを通して、見ることの判断を支える、それぞれの「物差し」を問いかけます。
 
-## 文化庁の支援について
+## 支援
+
+支援：令和8年度文化庁メディア芸術クリエイター育成支援事業<br>
+Support: Project to Support Emerging Media Arts Creators, 2026
 
 本展は、令和8年度 文化庁メディア芸術クリエイター育成支援事業の「国内クリエイター発表支援プログラム」に採択された企画「見ることの物差し」の発表展です。
 
