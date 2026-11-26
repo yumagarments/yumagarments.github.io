@@ -7,7 +7,6 @@ hideFig: true
 ## Yuma Garments 個展「見ることの物差し」
 
 2027年1月、新宿眼科画廊で個展を開催します。
-アニメーション映像と立体模型による展示です。
 
 ![Yuma Garments 個展「見ることの物差し」](/images/solo-2027-mirukoto.jpg)
 
@@ -15,7 +14,7 @@ hideFig: true
 
 | | |
 | --- | --- |
-| 会期 | **2027年1月15日（金）〜 1月27日（水）** |
+| 会期 | 2027年1月15日（金）〜 1月27日（水） |
 | 時間 | 12:00〜20:00（水曜は17:00まで） |
 | 休廊日 | 木曜日 |
 | 入場 | 無料 |
@@ -36,7 +35,7 @@ hideFig: true
 
 ## 文化庁の支援について
 
-本展は、**令和8年度 文化庁メディア芸術クリエイター育成支援事業**の「国内クリエイター発表支援プログラム」に採択された企画「見ることの物差し」の発表展です。
+本展は、令和8年度 文化庁メディア芸術クリエイター育成支援事業の「国内クリエイター発表支援プログラム」に採択された企画「見ることの物差し」の発表展です。
 
 - [採択のお知らせ](/works/mirukoto-no-monosashi/)
 - [文化庁 クリエイター育成支援事業の企画ページ](https://creators.j-mediaarts.bunka.go.jp/project/2026-es36)
@@ -51,8 +50,8 @@ hideFig: true
 
 **Yuma Garments Solo Exhibition "Mirukoto no Monosashi"**
 
-- **Dates**: January 15 (Fri) – 27 (Wed), 2027
-- **Hours**: 12:00–20:00 (Wed until 17:00) / Closed on Thursdays
-- **Admission**: Free
-- **Venue**: Space O, Shinjuku Ophthalmologist Gallery, 5-18-11 Shinjuku, Shinjuku-ku, Tokyo
-- **Support**: Project to Support Emerging Media Arts Creators, 2026 (Agency for Cultural Affairs, Government of Japan)
+- Dates: January 15 (Fri) – 27 (Wed), 2027
+- Hours: 12:00–20:00 (Wed until 17:00) / Closed on Thursdays
+- Admission: Free
+- Venue: Space O, Shinjuku Ophthalmologist Gallery, 5-18-11 Shinjuku, Shinjuku-ku, Tokyo
+- Support: Project to Support Emerging Media Arts Creators, 2026 (Agency for Cultural Affairs, Government of Japan)
